@@ -90,7 +90,19 @@ describe('XmlChar.IsFirstNameChar', () => {
     // U+00F7 DIVISION SIGN (÷) is not a valid XML name start character
     expect(XmlChar.IsFirstNameChar('\u00F7')).toBe(false);
   });
-  it('should return false for various non visible characters', () => {
+  it('should return false for specific range of BMP characters that are excluded [#x00-#x2F]', () => {
+    // Control characters and punctuation
+    expect(XmlChar.IsFirstNameChar('\u0000')).toBe(false); // U+0000 NULL
+    expect(XmlChar.IsFirstNameChar('\u001F')).toBe(false); // U+001F INFORMATION SEPARATOR ONE
+    expect(XmlChar.IsFirstNameChar('\u0020')).toBe(false); // U+0020 SPACE
+    expect(XmlChar.IsFirstNameChar('\u002F')).toBe(false); // U+002F SOLIDUS
+  });
+  it('should return false for specific range of BMP characters that are excluded [#x300-#x36F]', () => {
+    // Combining diacritical marks
+    expect(XmlChar.IsFirstNameChar('\u0300')).toBe(false); // U+0300 COMBINING GRAVE ACCENT
+    expect(XmlChar.IsFirstNameChar('\u036F')).toBe(false); // U+036F COMBINING LATIN SMALL LETTER X
+  });
+  it('should return false for specific range of BMP characters that are excluded [#x2000-#x200B]', () => {
     const chars = [
       '\u2000', // U+2000 EN QUAD
       '\u2001', // U+2001 EM QUAD
@@ -108,6 +120,16 @@ describe('XmlChar.IsFirstNameChar', () => {
     chars.forEach(ch => {
       expect(XmlChar.IsFirstNameChar(ch)).toBe(false);
     });
+  });
+  it('should return false for specific range of BMP characters that are excluded [#x2190-#x2BFF]', () => {
+    // Arrows and miscellaneous symbols
+    expect(XmlChar.IsFirstNameChar('\u2190')).toBe(false); // U+2190 LEFTWARDS ARROW
+    expect(XmlChar.IsFirstNameChar('\u2BFF')).toBe(false); // U+2BFF MISCELLANEOUS SYMBOLS AND ARROWS
+  });
+  it('should return false for specific range of BMP characters that are excluded [#xE000-#xF8FF]', () => {
+    // Private Use Area
+    expect(XmlChar.IsFirstNameChar('\uE000')).toBe(false); // U+E000 PRIVATE USE AREA
+    expect(XmlChar.IsFirstNameChar('\uF8FF')).toBe(false); // U+F8FF PRIVATE USE AREA
   });
   it('should return false for characters outside the BMP', () => {
     // U+1F600 GRINNING FACE (😀)
