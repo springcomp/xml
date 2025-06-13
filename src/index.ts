@@ -1,4 +1,5 @@
 import { Readable, Transform, TransformCallback } from 'node:stream';
+import { XmlTreeParser } from './Parser/XmlParser.js';
 
 export function sum(left: number, right: number): number {
   return left + right;
@@ -41,4 +42,6 @@ class T extends Transform {
   }
 }
 
-read();
+const parser = new XmlTreeParser();
+const document = parser.parse('<root />');
+console.log(JSON.stringify(document));
