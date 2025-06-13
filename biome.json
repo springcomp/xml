@@ -12,7 +12,7 @@
     "lineWidth": 120,
     "attributePosition": "auto",
     "bracketSpacing": true,
-    "ignore": ["**/tests/fixtures/**/*", "**/dist", "**/coverage", "**/.vscode"]
+    "ignore": ["**/tests/fixtures/**/*", "**/dist", "**/coverage", "**/.vscode", "**/XmlCharTables.ts"]
   },
   "organizeImports": { "enabled": true },
   "linter": {
@@ -44,7 +44,8 @@
       "**/shared-fixtures",
       "**/coverage",
       "**/__snapshots__",
-      "src/**/*.js"
+      "src/**/*.js",
+      "src/**/XmlCharTables.ts"
     ]
   },
   "javascript": {

@@ -43,5 +43,5 @@ class T extends Transform {
 }
 
 const parser = new XmlTreeParser();
-const document = parser.parse('<root />');
-console.log(JSON.stringify(document));
+const document = parser.parse('<r />');
+console.log(`doc: ${JSON.stringify(document)}`);
