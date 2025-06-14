@@ -14,4 +14,7 @@ describe('XmlChar.IsWhitespace', () => {
   it("should return true for ' ' (U+0020 SPACE)", () => {
     expect(XmlChar.IsWhitespace(' ')).toBe(true);
   });
+  it('should return false for invalid code points', () => {
+    expect(XmlChar.IsWhitespace('')).toBe(false);
+  });
 });

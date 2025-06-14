@@ -12,7 +12,7 @@ export class XmlChar {
 
   static IsWhitespace(c: string): boolean {
     const ch = c.codePointAt(0) ?? -1;
-    if (ch < 0 || ch > 0x10ffff) {
+    if (ch < 0 /* || ch > 0x10ffff */) {
       return false; // Invalid code point
     }
     return XmlChar.whitespaceChars.includes(ch);
@@ -20,7 +20,7 @@ export class XmlChar {
 
   static IsNameStartChar(c: string): boolean {
     const ch = c.codePointAt(0) ?? -1;
-    if (ch < 0 || ch > 0x10ffff) {
+    if (ch < 0 /* || ch > 0x10ffff */) {
       return false; // Invalid code point
     }
 
@@ -44,7 +44,7 @@ export class XmlChar {
     }
 
     const ch = c.codePointAt(0) ?? -1;
-    if (ch < 0 || ch > 0x10ffff) {
+    if (ch < 0 /* || ch > 0x10ffff */) {
       return false; // Invalid code point
     }
 
