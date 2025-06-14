@@ -34,7 +34,7 @@ export class XmlChar {
       return false;
     }
 
-    return XmlChar.IsValidLookupChar(ch, XmlCharTables.NameStartCharPages, XmlCharTables.NameStartCharBitmap);
+    return XmlChar.IsValidLookupChar(ch, XmlCharTables.NameStartCharPages, XmlCharTables.NameCharBitmap);
   }
   static IsNameChar(c: string): boolean {
     // all valid NameStartChar characters are also
