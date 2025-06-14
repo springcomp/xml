@@ -77,17 +77,17 @@ describe('XmlChar.IsFirstNameChar', () => {
     expect(XmlChar.IsFirstNameChar('\uFFFD')).toBe(true); // U+FFFD REPLACEMENT CHARACTER
   });
   it('should return false for specific BMP characters that are excluded', () => {
-    // U+0024 DOLLAR SIGN ($) is not a valid XML name start character
+    // U+0024 DOLLAR SIGN ($) is not a valid XML NameStartChar character
     expect(XmlChar.IsFirstNameChar('$')).toBe(false);
-    // U+0030 DIGIT ZERO (0) is not a valid XML name start character
+    // U+0030 DIGIT ZERO (0) is not a valid XML NameStartChar character
     expect(XmlChar.IsFirstNameChar('0')).toBe(false);
-    // U+002D HYPHEN-MINUS (-) is not a valid XML name start character
+    // U+002D HYPHEN-MINUS (-) is not a valid XML NameStartChar character
     expect(XmlChar.IsFirstNameChar('-')).toBe(false);
-    // U+00A0 NO-BREAK SPACE is not a valid XML name start character
+    // U+00A0 NO-BREAK SPACE is not a valid XML NameStartChar character
     expect(XmlChar.IsFirstNameChar('\u00A0')).toBe(false);
-    // U+00D7 MULTIPLICATION SIGN (×) is not a valid XML name start character
+    // U+00D7 MULTIPLICATION SIGN (×) is not a valid XML NameStartChar character
     expect(XmlChar.IsFirstNameChar('\u00D7')).toBe(false);
-    // U+00F7 DIVISION SIGN (÷) is not a valid XML name start character
+    // U+00F7 DIVISION SIGN (÷) is not a valid XML NameStartChar character
     expect(XmlChar.IsFirstNameChar('\u00F7')).toBe(false);
   });
   it('should return false for specific range of BMP characters that are excluded [#x00-#x2F]', () => {
