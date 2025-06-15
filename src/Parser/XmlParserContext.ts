@@ -1,15 +1,20 @@
 import { XNode } from '../Dom/XDocument.js';
 import { Stack } from '../Utils/Stack.js';
+import { StringBuilder } from '../Utils/StringBuilder.js';
 import { NullParserState, XmlParserState } from './XmlParserState.js';
 
 export class XmlParserContext {
   private currentState: XmlParserState = NullParserState.Instance;
+  private readonly keywordBuilder = new StringBuilder();
   private position = 0;
   private previousState: XmlParserState = NullParserState.Instance;
   private readonly nodes = new Stack<XNode>();
   private stateTag = 0;
   public get CurrentState(): XmlParserState {
     return this.currentState;
+  }
+  public get KeywordBuilder(): StringBuilder {
+    return this.keywordBuilder;
   }
   public get Nodes(): Stack<XNode> {
     return this.nodes;

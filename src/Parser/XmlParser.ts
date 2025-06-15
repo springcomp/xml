@@ -11,6 +11,10 @@ export class XmlTreeParser {
   constructor(rootState?: XmlRootState) {
     this.rootState = rootState ?? new XmlRootState();
   }
+  // TODO: REMOVE the _getContext method
+  public _getContext(): XmlParserContext {
+    return this.context;
+  }
   public parse(xml: string): XDocument {
     this.reset();
 

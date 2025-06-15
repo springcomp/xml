@@ -45,3 +45,4 @@ class T extends Transform {
 const parser = new XmlTreeParser();
 const document = parser.parse('<r />');
 console.log(`doc: ${JSON.stringify(document)}`);
+console.log(`context: ${parser._getContext().KeywordBuilder.toString()}`);

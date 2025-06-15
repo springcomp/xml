@@ -13,4 +13,7 @@ export class Ref<T> {
   public get Value(): T {
     return this.value;
   }
+  public set Value(t: T) {
+    this.value = t;
+  }
 }
