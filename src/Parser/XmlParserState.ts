@@ -1,4 +1,5 @@
-import { XmlParserContext } from './XmlParserContext';
+import { XmlParserContext } from './XmlParserContext.js';
+import { Ref } from '../Utils/Ref.js';
 
 export abstract class XmlParserState {
   private name: string;
@@ -22,15 +23,15 @@ export abstract class XmlParserState {
     child.parent = this;
     return child;
   }
-  public pushChar(c: string, context: XmlParserContext): XmlParserState {
+  public pushChar(c: string, context: XmlParserContext, replayCharacter: Ref<boolean>): XmlParserState {
     console.log(`${this.name}.pushChar: ${c} at position ${context.Position}; StateTag: ${context.StateTag}`);
-    const nextState = this.onChar(c, context);
+    const nextState = this.onChar(c, context, replayCharacter);
     if (nextState !== context.CurrentState) {
       console.log('STATE CHANGED');
     }
     return nextState;
   }
-  protected abstract onChar(c: string, context: XmlParserContext): XmlParserState;
+  protected abstract onChar(_c: string, _context: XmlParserContext, _replayCharacter: Ref<boolean>): XmlParserState;
 }
 export class NullParserState extends XmlParserState {
   /**

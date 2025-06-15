@@ -1,3 +1,4 @@
+import { Ref } from '../Utils/Ref.js';
 import { XmlParserContext } from './XmlParserContext.js';
 import { XmlParserState } from './XmlParserState.js';
 import { XmlTagState } from './XmlTagState.js';
@@ -13,7 +14,7 @@ export class XmlRootState extends XmlParserState {
     super('XmlRootState');
     this.tagState = this.Adopt(tagState ?? new XmlTagState());
   }
-  public onChar(c: string, context: XmlParserContext): XmlParserState {
+  public onChar(c: string, context: XmlParserContext, _replayCharacter: Ref<boolean>): XmlParserState {
     if (c == '<') {
       if (context.StateTag !== XmlRootState.FREE) {
         // TODO: Exception

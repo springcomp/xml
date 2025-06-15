@@ -1,5 +1,5 @@
 import { XElement } from '../Dom/XDocument.js';
-import { XmlChar } from './XmlChar.js';
+import { Ref } from '../Utils/Ref.js';
 import { XmlNameState } from './XmlNameState.js';
 import { XmlParserContext } from './XmlParserContext.js';
 import { XmlParserState } from './XmlParserState.js';
@@ -13,7 +13,7 @@ export class XmlTagState extends XmlParserState {
     super('XmlTagState');
     this.nameState = this.Adopt(nameState ?? new XmlNameState());
   }
-  public onChar(_c: string, context: XmlParserContext): XmlParserState {
+  public onChar(_c: string, context: XmlParserContext, _replayCharacter: Ref<boolean>): XmlParserState {
     const peekedNode = context.Nodes.peek();
     const element = peekedNode !== null ? (peekedNode as XElement) : null;
 

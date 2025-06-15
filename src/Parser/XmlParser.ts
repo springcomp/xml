@@ -1,9 +1,11 @@
 import { XDocument } from '../Dom/XDocument.js';
+import { Ref } from '../Utils/Ref.js';
 import { XmlParserContext } from './XmlParserContext.js';
 import { XmlParserState } from './XmlParserState.js';
 import { XmlRootState } from './XmlRootState.js';
 
 export class XmlTreeParser {
+  private static readonly REPLAY_LIMIT_PER_CHARACTER = 10;
   private context = new XmlParserContext();
   private rootState: XmlParserState;
   constructor(rootState?: XmlRootState) {
@@ -24,18 +26,24 @@ export class XmlTreeParser {
   private push(c: string): void {
     let done = false;
     do {
-      const nextState = this.context.CurrentState.pushChar(c, this.context);
+      for (let loopLimit = 0; loopLimit < XmlTreeParser.REPLAY_LIMIT_PER_CHARACTER; loopLimit++) {
+        const replayCharacter = Ref.wrap(false);
+        const nextState = this.context.CurrentState.pushChar(c, this.context, replayCharacter);
 
-      if (nextState === this.context.CurrentState) {
-        done = true;
-        break;
+        if (nextState === this.context.CurrentState) {
+          done = true;
+          break;
+        }
+
+        // state changed
+        this.context.PreviousState = this.context.CurrentState;
+        this.context.CurrentState = nextState;
+
+        if (!replayCharacter.value) {
+          done = true;
+          break;
+        }
       }
-
-      // state changed
-      this.context.PreviousState = this.context.CurrentState;
-      this.context.CurrentState = nextState;
-
-      done = true;
     } while (false);
 
     if (!done) {
