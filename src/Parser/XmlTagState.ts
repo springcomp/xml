@@ -12,8 +12,7 @@ export class XmlTagState extends XmlParserState {
     super('XmlTagState');
     this.nameState = this.Adopt(nameState ?? new XmlNameState());
   }
-  public pushChar(c: string, context: XmlParserContext): XmlParserState {
-    console.log(`XmlTagState.pushChar: ${c} at position ${context.Position}; StateTag: ${context.StateTag}`);
+  public onChar(c: string, context: XmlParserContext): XmlParserState {
     const peekedNode = context.Nodes.peek();
     const element = peekedNode !== null ? (peekedNode as XElement) : null;
 

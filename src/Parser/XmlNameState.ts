@@ -5,8 +5,7 @@ export class XmlNameState extends XmlParserState {
   constructor() {
     super('XmlNameState');
   }
-  public pushChar(c: string, context: XmlParserContext): XmlParserState {
-    console.log(`XmlNameTag.pushChar: ${c} at position ${context.Position}; StateTag: ${context.StateTag}`);
+  public onChar(_c: string, _context: XmlParserContext): XmlParserState {
     return this;
   }
 }

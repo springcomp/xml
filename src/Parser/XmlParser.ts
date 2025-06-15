@@ -31,7 +31,6 @@ export class XmlTreeParser {
         break;
       }
 
-      console.log('STATE CHANGED');
       // state changed
       this.context.PreviousState = this.context.CurrentState;
       this.context.CurrentState = nextState;

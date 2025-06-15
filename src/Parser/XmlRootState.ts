@@ -13,8 +13,7 @@ export class XmlRootState extends XmlParserState {
     super('XmlRootState');
     this.tagState = this.Adopt(tagState ?? new XmlTagState());
   }
-  public pushChar(c: string, context: XmlParserContext): XmlParserState {
-    console.log(`XmlRootState.pushChar: ${c} at position ${context.Position}; StateTag: ${context.StateTag}`);
+  public onChar(c: string, context: XmlParserContext): XmlParserState {
     if (c == '<') {
       if (context.StateTag !== XmlRootState.FREE) {
         // TODO: Exception

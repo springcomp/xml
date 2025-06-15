@@ -21,7 +21,15 @@ export abstract class XmlParserState {
     child.parent = this;
     return child;
   }
-  public abstract pushChar(c: string, context: XmlParserContext): XmlParserState;
+  public pushChar(c: string, context: XmlParserContext): XmlParserState {
+    console.log(`${this.name}.pushChar: ${c} at position ${context.Position}; StateTag: ${context.StateTag}`);
+    const nextState = this.onChar(c, context);
+    if (nextState !== context.CurrentState) {
+      console.log('STATE CHANGED');
+    }
+    return nextState;
+  }
+  protected abstract onChar(c: string, context: XmlParserContext): XmlParserState;
 }
 export class NullParserState extends XmlParserState {
   /**
@@ -33,7 +41,7 @@ export class NullParserState extends XmlParserState {
     super('null');
   }
 
-  public pushChar(_: string, _context: XmlParserContext): XmlParserState {
+  public onChar(_: string, _context: XmlParserContext): XmlParserState {
     throw new Error('Application Error: NullParserState cannot process characters');
   }
 }
