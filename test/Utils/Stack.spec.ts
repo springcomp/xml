@@ -10,6 +10,13 @@ describe('Stack', () => {
     stack.push(3);
     expect(stack.count()).toBe(3);
   });
+  it('should peek the top element in the stack', () => {
+    const stack = new Stack<number>();
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+    expect(stack.peek()).toBe(3);
+  });
   it('should push and pop elements in LIFO order', () => {
     const stack = new Stack<number>();
     stack.push(1);

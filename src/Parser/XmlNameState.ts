@@ -1,5 +1,4 @@
 import { INamedXObject, isINamedXObject } from '../Dom/INamedXObject.js';
-import { asType } from '../Utils/TypeHelpers.js';
 import { Ref } from '../Utils/Ref.js';
 import { XmlChar } from './XmlChar.js';
 import { XmlParserContext } from './XmlParserContext.js';
