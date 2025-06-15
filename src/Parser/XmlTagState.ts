@@ -24,7 +24,6 @@ export class XmlTagState extends XmlParserState {
     // then it’s the parent and we need to create a new element
     if (element === null || element.IsEnded) {
       const parent = peekedNode;
-      console.log(`XmlTagState: parent = ${JSON.stringify(parent)}`);
       element = new XElement(context.Position - XmlTagState.STARTOFFSET);
       context.Nodes.push(element);
       parent.addChildNode(element);
@@ -39,7 +38,6 @@ export class XmlTagState extends XmlParserState {
       }
 
       if (context.StateTag == XmlTagState.MAYBE_SELF_CLOSING) {
-        console.log(element);
         element.close(element);
         context.Nodes.pop();
       }

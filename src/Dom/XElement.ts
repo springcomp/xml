@@ -40,4 +40,7 @@ export class XElement extends XContainer implements INamedXObject {
   get Name(): XName {
     return this.name;
   }
+  set Name(name: XName) {
+    this.name = name;
+  }
 }

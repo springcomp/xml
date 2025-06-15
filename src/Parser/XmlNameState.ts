@@ -1,14 +1,25 @@
+import { INamedXObject, isINamedXObject } from '../Dom/INamedXObject.js';
+import { asType } from '../Utils/TypeHelpers.js';
 import { Ref } from '../Utils/Ref.js';
 import { XmlChar } from './XmlChar.js';
 import { XmlParserContext } from './XmlParserContext.js';
 import { XmlParserState } from './XmlParserState.js';
+import { XName } from '../Dom/XName.js';
 
 export class XmlNameState extends XmlParserState {
   constructor() {
     super('XmlNameState');
   }
   protected onChar(c: string, context: XmlParserContext, _replayCharacter: Ref<boolean>): XmlParserState {
+    const node = context.Nodes.peek();
+    if (!isINamedXObject(node)) {
+      // TODO: error
+    }
+
+    const named = <INamedXObject>(<unknown>node);
     if (XmlChar.IsWhitespace(c) || ['<', '>', '/', '='].includes(c)) {
+      const name = context.KeywordBuilder.toString();
+      named.Name = new XName(name);
       return this.Parent;
     }
 
