@@ -7,7 +7,7 @@ export class XmlNameState extends XmlParserState {
   constructor() {
     super('XmlNameState');
   }
-  public onChar(c: string, context: XmlParserContext, _replayCharacter: Ref<boolean>): XmlParserState {
+  protected onChar(c: string, context: XmlParserContext, _replayCharacter: Ref<boolean>): XmlParserState {
     if (XmlChar.IsWhitespace(c) || ['<', '>', '/', '='].includes(c)) {
       return this.Parent;
     }

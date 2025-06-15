@@ -1,13 +1,14 @@
 import { XDocument } from '../Dom/XDocument.js';
 import { Ref } from '../Utils/Ref.js';
 import { XmlParserContext } from './XmlParserContext.js';
-import { XmlParserState } from './XmlParserState.js';
 import { XmlRootState } from './XmlRootState.js';
+
+type ParseResult = [XDocument | null, null];
 
 export class XmlTreeParser {
   private static readonly REPLAY_LIMIT_PER_CHARACTER = 10;
   private context = new XmlParserContext();
-  private rootState: XmlParserState;
+  private rootState: XmlRootState;
   constructor(rootState?: XmlRootState) {
     this.rootState = rootState ?? new XmlRootState();
   }
@@ -15,17 +16,34 @@ export class XmlTreeParser {
   public _getContext(): XmlParserContext {
     return this.context;
   }
-  public parse(xml: string): XDocument {
+  public parse(xml: string): ParseResult {
     this.reset();
 
     const chars = xml.split('');
     chars.forEach(this.push, this);
-    return new XDocument();
+    return this.endAllNodes();
   }
-  public reset(): void {
-    this.context.CurrentState = this.rootState;
-    this.context.PreviousState = this.rootState;
-    this.context.Nodes.clear();
+  private endAllNodes(): ParseResult {
+    this.context.Position++;
+    this.context.IsAtEndOfFile = true;
+
+    const nodes = this.context.Nodes;
+    if (nodes.count() != 1 || nodes.peek().as(XDocument) === null) {
+      // TODO throw new InvalidParserStateException ("Malformed state stack when ending all nodes");
+    }
+
+    const document = nodes.pop().as(XDocument);
+    if (document != null) {
+      document.end(this.context.Position);
+    }
+
+    //for (int i = nodes.Length - 1; i >= 0; i--) {
+    //	var node = nodes[i];
+    //	if (!node.IsEnded) {
+    //		throw new InvalidParserStateException ($"Parser states did not end '{node}' node");
+    //	}
+
+    return [document, null];
   }
   private push(c: string): void {
     let done = false;
@@ -57,5 +75,11 @@ export class XmlTreeParser {
     }
 
     this.context.Position++;
+  }
+  private reset(): void {
+    this.context.CurrentState = this.rootState;
+    this.context.PreviousState = this.rootState;
+    this.context.Nodes.clear();
+    this.context.Nodes.push(this.rootState.createDocument());
   }
 }

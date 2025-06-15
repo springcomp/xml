@@ -43,7 +43,7 @@ export class NullParserState extends XmlParserState {
     super('null');
   }
 
-  public onChar(_: string, _context: XmlParserContext): XmlParserState {
+  protected onChar(_: string, _context: XmlParserContext): XmlParserState {
     throw new Error('Application Error: NullParserState cannot process characters');
   }
 }

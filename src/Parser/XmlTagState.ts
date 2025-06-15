@@ -1,4 +1,5 @@
-import { XElement } from '../Dom/XDocument.js';
+import { XContainer } from '../Dom/XContainer.js';
+import { XElement } from '../Dom/XElement.js';
 import { Ref } from '../Utils/Ref.js';
 import { XmlChar } from './XmlChar.js';
 import { XmlNameState } from './XmlNameState.js';
@@ -7,7 +8,8 @@ import { XmlParserState } from './XmlParserState.js';
 
 export class XmlTagState extends XmlParserState {
   // states
-  //private static readonly STARTOFFSET = 1; // <
+  private static readonly STARTOFFSET = 1; // <
+  private static readonly MAYBE_SELF_CLOSING = 2;
 
   private nameState: XmlNameState;
   constructor(nameState?: XmlNameState) {
@@ -15,21 +17,47 @@ export class XmlTagState extends XmlParserState {
     this.nameState = this.Adopt(nameState ?? new XmlNameState());
   }
   public onChar(c: string, context: XmlParserContext, replayCharacter: Ref<boolean>): XmlParserState {
-    const peekedNode = context.Nodes.peek();
-    const element = peekedNode !== null ? (peekedNode as XElement) : null;
+    const peekedNode = context.Nodes.peek() as XContainer;
+    let element = peekedNode.as(XElement);
 
     // if the current node on the stack is ended or not an element
     // then it’s the parent and we need to create a new element
-    if (element === null) {
-      //const parent = peekedNode;
-      const element = new XElement(); // context.Position - XmlTagState.STARTOFFSET);
+    if (element === null || element.IsEnded) {
+      const parent = peekedNode;
+      console.log(`XmlTagState: parent = ${JSON.stringify(parent)}`);
+      element = new XElement(context.Position - XmlTagState.STARTOFFSET);
       context.Nodes.push(element);
-      //parent.AddChildNode(element);
+      parent.addChildNode(element);
     }
 
-    if (XmlChar.IsNameStartChar(c)) {
+    if (c == '>') {
+      element.HasEndBracket = true;
+      element.end(context.Position);
+
+      if (!element.IsNamed) {
+        // TODO: error (XmlCoreDiagnostics.UnnamedTag, element.Span);
+      }
+
+      if (context.StateTag == XmlTagState.MAYBE_SELF_CLOSING) {
+        console.log(element);
+        element.close(element);
+        context.Nodes.pop();
+      }
+      return this.Parent;
+    }
+
+    if (c == '/') {
+      context.StateTag = XmlTagState.MAYBE_SELF_CLOSING;
+      return this;
+    }
+
+    if (!element.IsNamed && XmlChar.IsNameStartChar(c)) {
       replayCharacter.Value = true;
       return this.nameState;
+    }
+
+    if (XmlChar.IsWhitespace(c)) {
+      return this;
     }
 
     return this;

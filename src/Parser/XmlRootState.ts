@@ -1,3 +1,4 @@
+import { XDocument } from '../Dom/XDocument.js';
 import { Ref } from '../Utils/Ref.js';
 import { XmlChar } from './XmlChar.js';
 import { XmlParserContext } from './XmlParserContext.js';
@@ -15,7 +16,10 @@ export class XmlRootState extends XmlParserState {
     super('XmlRootState');
     this.tagState = this.Adopt(tagState ?? new XmlTagState());
   }
-  public onChar(c: string, context: XmlParserContext, replayCharacter: Ref<boolean>): XmlParserState {
+  public createDocument(): XDocument {
+    return new XDocument();
+  }
+  protected onChar(c: string, context: XmlParserContext, replayCharacter: Ref<boolean>): XmlParserState {
     if (c == '<') {
       if (context.StateTag !== XmlRootState.FREE) {
         // TODO: Exception

@@ -1,22 +1,29 @@
-import { XNode } from '../Dom/XDocument.js';
+import { XObject } from '../Dom/XObject.js';
 import { Stack } from '../Utils/Stack.js';
 import { StringBuilder } from '../Utils/StringBuilder.js';
 import { NullParserState, XmlParserState } from './XmlParserState.js';
 
 export class XmlParserContext {
   private currentState: XmlParserState = NullParserState.Instance;
+  private isAtEndOfFile = false;
   private readonly keywordBuilder = new StringBuilder();
   private position = 0;
   private previousState: XmlParserState = NullParserState.Instance;
-  private readonly nodes = new Stack<XNode>();
+  private readonly nodes = new Stack<XObject>();
   private stateTag = 0;
   public get CurrentState(): XmlParserState {
     return this.currentState;
   }
+  public get IsAtEndOfFile(): boolean {
+    return this.isAtEndOfFile;
+  }
+  public set IsAtEndOfFile(eof: boolean) {
+    this.isAtEndOfFile = eof;
+  }
   public get KeywordBuilder(): StringBuilder {
     return this.keywordBuilder;
   }
-  public get Nodes(): Stack<XNode> {
+  public get Nodes(): Stack<XObject> {
     return this.nodes;
   }
   public get Position() {

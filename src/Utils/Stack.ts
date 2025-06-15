@@ -17,6 +17,14 @@ export class Stack<T> {
   }
 
   /**
+   * Returns the number of items in the stack.
+   * @returns the number of items.
+   */
+  public count(): number {
+    return this.array.length;
+  }
+
+  /**
    * Checks if the stack is empty.
    * @returns True if the stack is empty, false otherwise.
    */
@@ -26,11 +34,11 @@ export class Stack<T> {
 
   /**
    * Returns the top element of the stack without removing it.
-   * @returns The top element, or null if the stack is empty.
+   * @returns The top element.
    */
-  public peek(): T | null {
+  public peek(): T {
     if (this.isEmpty()) {
-      return null;
+      throw new EmptyStackException();
     }
     return this.array[this.array.length - 1];
   }
@@ -38,9 +46,9 @@ export class Stack<T> {
   /**
    * Removes and returns the top element of the stack.
    * @throws EmptyStackException if the stack is empty.
-   * @returns The top element, or null if the stack is empty.
+   * @returns The top element.
    */
-  public pop(): T | null {
+  public pop(): T {
     if (this.isEmpty()) {
       throw new EmptyStackException();
     }

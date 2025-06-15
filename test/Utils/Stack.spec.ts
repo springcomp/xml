@@ -3,6 +3,13 @@ import { Stack } from '../../src/Utils/Stack.js';
 import { EmptyStackException } from '../../src/Utils/StackException.js';
 
 describe('Stack', () => {
+  it('count() should return the number of items', () => {
+    const stack = new Stack<number>();
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+    expect(stack.count()).toBe(3);
+  });
   it('should push and pop elements in LIFO order', () => {
     const stack = new Stack<number>();
     stack.push(1);
@@ -13,13 +20,9 @@ describe('Stack', () => {
     expect(stack.pop()).toBe(1);
   });
 
-  it('should return null when peeking an empty stack', () => {
-    const stack = new Stack<string>();
-    expect(stack.peek()).toBeNull();
-  });
-
   it('should throw EmptyStackException when popping an empty stack', () => {
     const stack = new Stack<object>();
+    expect(() => stack.peek()).toThrow(EmptyStackException);
     expect(() => stack.pop()).toThrow(EmptyStackException);
   });
 
@@ -40,6 +43,5 @@ describe('Stack', () => {
     stack.push(2);
     stack.clear();
     expect(stack.isEmpty()).toBe(true);
-    expect(stack.peek()).toBeNull();
   });
 });
