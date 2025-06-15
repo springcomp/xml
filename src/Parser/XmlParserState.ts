@@ -9,8 +9,9 @@ export abstract class XmlParserState {
   public get Name(): string {
     return this.name;
   }
-  public get Parent(): XmlParserState | null {
-    return this.parent;
+  public get Parent(): XmlParserState {
+    // biome-ignore lint: lint/style/noNonNullAssertion
+    return this.parent!;
   }
   public Adopt<TChild extends XmlParserState>(child: TChild): TChild {
     if (child.Parent !== null) {
