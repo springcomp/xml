@@ -20,4 +20,10 @@ export class XmlDiagnosticDescriptor {
   get Title(): string {
     return this.title;
   }
+  equals(other: XmlDiagnosticDescriptor): boolean {
+    return this.Id == other.Id;
+  }
+  getFormattedMessage(): string {
+    return this.message ?? '';
+  }
 }

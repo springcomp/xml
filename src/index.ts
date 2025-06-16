@@ -4,7 +4,6 @@ const parser = new XmlTreeParser();
 const document = parser.parse('<root />');
 const fix = fixCircularReferences(document);
 console.log(`doc: ${JSON.stringify(document, fix, 2)}`);
-console.log(`context: ${parser._getContext().KeywordBuilder.toString()}`);
 
 function fixCircularReferences(o: unknown) {
   const weirdTypes = [

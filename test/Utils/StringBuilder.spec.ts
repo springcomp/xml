@@ -45,6 +45,15 @@ describe('StringBuilder', () => {
     });
   });
 
+  describe('appendLine', () => {
+    it('appends a line with a newline character', () => {
+      const sut = new StringBuilder();
+      sut.appendLine('Hello');
+      sut.appendLine('World!');
+      expect(sut.toString()).toBe('Hello\nWorld!\n');
+    });
+  });
+
   describe('arrayUnsafe', () => {
     it('returns view of underlying buffer', () => {
       const sut = new StringBuilder().append('Hello').append(' World!');

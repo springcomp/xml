@@ -17,4 +17,7 @@ export class TextSpan {
   public get End(): number {
     return this.start + this.length;
   }
+  public equals(other: TextSpan): boolean {
+    return this.start === other.start && this.length == other.length;
+  }
 }

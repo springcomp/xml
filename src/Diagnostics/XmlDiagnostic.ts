@@ -8,6 +8,9 @@ export class XmlDiagnostic {
     this.descriptor = descriptor;
     this.span = span;
   }
+  public get Descriptor(): XmlDiagnosticDescriptor {
+    return this.descriptor;
+  }
   public get Span(): TextSpan {
     return this.span;
   }

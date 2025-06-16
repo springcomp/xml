@@ -18,4 +18,21 @@ describe('TextSpan', () => {
     const span = TextSpan.fromBounds(2, 8);
     expect(span.End).toBe(8);
   });
+
+  it('should consider two TextSpan objects with same start and length as deeply equal', () => {
+    const span1 = new TextSpan(2, 5);
+    const span2 = new TextSpan(2, 5);
+    expect(span1).toEqual(span2);
+    expect(span1.equals(span2)).toBe(true);
+  });
+
+  it('should consider two TextSpan objects with different start or length as not deeply equal', () => {
+    const span1 = new TextSpan(2, 5);
+    const span2 = new TextSpan(3, 5);
+    const span3 = new TextSpan(2, 6);
+    expect(span1).not.toEqual(span2);
+    expect(span1).not.toEqual(span3);
+    expect(span1.equals(span2)).toBe(false);
+    expect(span1.equals(span3)).toBe(false);
+  });
 });

@@ -69,6 +69,14 @@ export class StringBuilder {
     return this;
   }
 
+  /**
+   * Appends a line of text.
+   * @param value The string to append.
+   */
+  appendLine(text: string): StringBuilder {
+    return this.append(`${text}\n`);
+  }
+
   /** Clears the builder instance so that it can be re-used. */
   clear(): void {
     this.#len = 0;
