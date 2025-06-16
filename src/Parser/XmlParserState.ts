@@ -23,15 +23,25 @@ export abstract class XmlParserState {
     child.parent = this;
     return child;
   }
-  public pushChar(c: string, context: XmlParserContext, replayCharacter: Ref<boolean>): XmlParserState {
+  public pushChar(
+    c: string,
+    context: XmlParserContext,
+    replayCharacter: Ref<boolean>,
+    isEndOfFile: boolean,
+  ): XmlParserState {
     console.log(`${this.name}.pushChar: ${c} at position ${context.Position}; StateTag: ${context.StateTag}`);
-    const nextState = this.onChar(c, context, replayCharacter);
+    const nextState = this.onChar(c, context, replayCharacter, isEndOfFile);
     if (nextState !== context.CurrentState) {
       console.log('STATE CHANGED');
     }
     return nextState;
   }
-  protected abstract onChar(_c: string, _context: XmlParserContext, _replayCharacter: Ref<boolean>): XmlParserState;
+  protected abstract onChar(
+    _c: string,
+    _context: XmlParserContext,
+    _replayCharacter: Ref<boolean>,
+    _isEndOfFile: boolean,
+  ): XmlParserState;
 }
 export class NullParserState extends XmlParserState {
   /**
@@ -43,7 +53,12 @@ export class NullParserState extends XmlParserState {
     super('null');
   }
 
-  protected onChar(_: string, _context: XmlParserContext): XmlParserState {
+  protected onChar(
+    _: string,
+    _context: XmlParserContext,
+    _replayCharacter: Ref<boolean>,
+    _isEndOfFile: boolean,
+  ): XmlParserState {
     throw new Error('Application Error: NullParserState cannot process characters');
   }
 }

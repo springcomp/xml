@@ -50,7 +50,7 @@ export class XmlTreeParser {
     do {
       for (let loopLimit = 0; loopLimit < XmlTreeParser.REPLAY_LIMIT_PER_CHARACTER; loopLimit++) {
         const replayCharacter = Ref.wrap(false);
-        const nextState = this.context.CurrentState.pushChar(c, this.context, replayCharacter);
+        const nextState = this.context.CurrentState.pushChar(c, this.context, replayCharacter, false);
 
         if (nextState === this.context.CurrentState) {
           done = true;

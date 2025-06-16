@@ -19,7 +19,12 @@ export class XmlTagState extends XmlParserState {
     super(XmlTagState.StateName);
     this.nameState = this.Adopt(nameState ?? new XmlNameState());
   }
-  public onChar(c: string, context: XmlParserContext, replayCharacter: Ref<boolean>): XmlParserState {
+  public onChar(
+    c: string,
+    context: XmlParserContext,
+    replayCharacter: Ref<boolean>,
+    _isEndOfFile: boolean,
+  ): XmlParserState {
     const peekedNode = context.Nodes.peek() as XContainer;
     let element = peekedNode.as(XElement);
 

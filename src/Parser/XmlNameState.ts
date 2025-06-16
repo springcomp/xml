@@ -10,7 +10,12 @@ export class XmlNameState extends XmlParserState {
   constructor() {
     super(XmlNameState.StateName);
   }
-  protected onChar(c: string, context: XmlParserContext, _replayCharacter: Ref<boolean>): XmlParserState {
+  protected onChar(
+    c: string,
+    context: XmlParserContext,
+    _replayCharacter: Ref<boolean>,
+    _isEndOfFile: boolean,
+  ): XmlParserState {
     const node = context.Nodes.peek();
     if (!isINamedXObject(node)) {
       // TODO: error

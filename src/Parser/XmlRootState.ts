@@ -20,7 +20,12 @@ export class XmlRootState extends XmlParserState {
   public createDocument(): XDocument {
     return new XDocument();
   }
-  protected onChar(c: string, context: XmlParserContext, replayCharacter: Ref<boolean>): XmlParserState {
+  protected onChar(
+    c: string,
+    context: XmlParserContext,
+    replayCharacter: Ref<boolean>,
+    _isEndOfFile: boolean,
+  ): XmlParserState {
     if (c == '<') {
       if (context.StateTag !== XmlRootState.FREE) {
         // TODO: Exception

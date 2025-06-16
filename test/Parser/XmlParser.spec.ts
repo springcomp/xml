@@ -10,8 +10,8 @@ describe('XmlParser', () => {
   }
   it('should parse self-closing single-element XML document', () => {
     const parser = new XmlParser(createRootState());
-    const [document, diagnostics] = parser.parseXml('<root />');
-    expect(diagnostics).toHaveLength(0);
+    const [document, _] = parser.parseXml('<root />');
+    parser.assertDiagnosticCount(0);
     expect(document?.FirstChild?.as(XElement)).not.toBeNull();
   });
   it('< /> should report unnamed tag error', () => {
