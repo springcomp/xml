@@ -6,10 +6,10 @@ export class XName {
     this.prefix = prefix ?? null;
     this.name = name;
   }
-  public hasPrefix(): boolean {
+  public get HasPrefix(): boolean {
     return this.prefix !== null;
   }
-  public get isValid(): boolean {
+  public get IsValid(): boolean {
     return this.name.length > 0;
   }
   public get Prefix(): string | null {

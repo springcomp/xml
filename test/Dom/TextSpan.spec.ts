@@ -35,4 +35,13 @@ describe('TextSpan', () => {
     expect(span1.equals(span2)).toBe(false);
     expect(span1.equals(span3)).toBe(false);
   });
+  it('should have a friendly text representation as a range', () => {
+    const span = new TextSpan(3);
+    expect(span.asRange()).toBe('[3, 3]');
+    expect(`${span}`).toBe('[3, 3]');
+  });
+  it('should have a friendly text representation as a location', () => {
+    const span = new TextSpan(3);
+    expect(span.asLocation()).toBe('(3, 0)');
+  });
 });

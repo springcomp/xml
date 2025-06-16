@@ -61,6 +61,9 @@ export class XmlTreeParser {
         // state changed
         this.context.PreviousState = this.context.CurrentState;
         this.context.CurrentState = nextState;
+        this.context.StateTag = 0;
+
+        this.context.KeywordBuilder.clear();
 
         if (!replayCharacter.value) {
           done = true;

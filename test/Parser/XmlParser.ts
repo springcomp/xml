@@ -5,6 +5,7 @@ import { ParseResult, XmlTreeParser } from '../../src/Parser/XmlParser';
 import { XmlRootState } from '../../src/Parser/XmlRootState';
 import { expect } from 'vitest';
 import { StringBuilder } from '../../src/Utils/StringBuilder';
+import { XmlDiagnosticSeverity } from '../../src/Diagnostics/XmlDiagnosticSeverity';
 
 export type XmlAssert = (parser: XmlParser) => void;
 
@@ -52,8 +53,17 @@ export class XmlAssertions {
     count: number,
     filter?: (diag: XmlDiagnostic) => boolean,
   ) {
-    const diagnostics = diags.map(filter ?? (_ => true));
-    expect(diagnostics.length).toBe(count);
+    const diagnostics = diags.filter(filter ?? (_ => true));
+    if (diagnostics.length !== count) {
+      const builder = new StringBuilder();
+      builder.appendLine(`Expected ${count} diagnostics, got ${diagnostics.length}`);
+      diagnostics.forEach(diag =>
+        builder.appendLine(
+          `${XmlDiagnosticSeverity[diag.Descriptor.Severity]}@${diag.Span}: ${diag.getFormattedMessage()}`,
+        ),
+      );
+      expect.fail(builder.toString());
+    }
   }
   public static assertDiagnostics(
     diags: XmlDiagnostic[],

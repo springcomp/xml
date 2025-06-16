@@ -17,7 +17,16 @@ export class TextSpan {
   public get End(): number {
     return this.start + this.length;
   }
+  public asLocation(): string {
+    return `(${this.start}, ${this.length})`;
+  }
+  public asRange(): string {
+    return `[${this.start}, ${this.End}]`;
+  }
   public equals(other: TextSpan): boolean {
     return this.start === other.start && this.length == other.length;
+  }
+  public toString(): string {
+    return this.asRange();
   }
 }

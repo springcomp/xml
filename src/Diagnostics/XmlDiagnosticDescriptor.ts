@@ -23,7 +23,11 @@ export class XmlDiagnosticDescriptor {
   equals(other: XmlDiagnosticDescriptor): boolean {
     return this.Id == other.Id;
   }
-  getFormattedMessage(): string {
-    return this.message ?? '';
+  getFormattedMessage(args?: unknown[]): string {
+    const format = `${this.title}\n${this.message}`;
+    const placeholders = args ?? [];
+    return format.replace(/{(\d+)}/g, (match, index) =>
+      typeof placeholders[index] !== 'undefined' ? `${placeholders[index]}` : match,
+    );
   }
 }

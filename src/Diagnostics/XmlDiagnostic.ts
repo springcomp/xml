@@ -4,9 +4,11 @@ import { XmlDiagnosticDescriptor } from './XmlDiagnosticDescriptor';
 export class XmlDiagnostic {
   private descriptor: XmlDiagnosticDescriptor;
   private span: TextSpan;
-  constructor(descriptor: XmlDiagnosticDescriptor, span: TextSpan) {
+  private args: unknown[];
+  constructor(descriptor: XmlDiagnosticDescriptor, span: TextSpan, args?: unknown[]) {
     this.descriptor = descriptor;
     this.span = span;
+    this.args = args ?? [];
   }
   public get Descriptor(): XmlDiagnosticDescriptor {
     return this.descriptor;
@@ -14,7 +16,7 @@ export class XmlDiagnostic {
   public get Span(): TextSpan {
     return this.span;
   }
-  public GetFormattedMessage(): string {
-    return this.descriptor.Title;
+  public getFormattedMessage(): string {
+    return this.descriptor.getFormattedMessage(this.args);
   }
 }

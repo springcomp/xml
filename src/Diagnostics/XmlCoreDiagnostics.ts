@@ -1,5 +1,5 @@
-import { XmlDiagnosticDescriptor } from './XmlDiagnosticDescriptor';
-import { XmlDiagnosticSeverity } from './XmlDiagnosticSeverity';
+import { XmlDiagnosticDescriptor } from './XmlDiagnosticDescriptor.js';
+import { XmlDiagnosticSeverity } from './XmlDiagnosticSeverity.js';
 
 export class XmlCoreDiagnostics {
   public static readonly UnnamedTag = new XmlDiagnosticDescriptor(
@@ -7,5 +7,11 @@ export class XmlCoreDiagnostics {
     'Unnamed tag',
     XmlDiagnosticSeverity.Error,
     'The tag ended without a name.',
+  );
+  public static InvalidNameCharacter = new XmlDiagnosticDescriptor(
+    'InvalidNameCharacter',
+    'Name has invalid character',
+    XmlDiagnosticSeverity.Error,
+    "Name was ended by invalid name character '{0}'",
   );
 }

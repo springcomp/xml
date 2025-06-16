@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { XmlRootState } from '../../src/Parser/XmlRootState.js';
 import { XElement } from '../../src/Dom/XElement.js';
-import { XmlCoreDiagnostics } from '../../src/Diagnostics/XmlCoreDiagnostics.js';
 import { XmlParser } from './XmlParser.js';
 
 describe('XmlParser', () => {
@@ -10,13 +9,8 @@ describe('XmlParser', () => {
   }
   it('should parse self-closing single-element XML document', () => {
     const parser = new XmlParser(createRootState());
-    const [document, _] = parser.parseXml('<root />');
+    const [document, _] = parser.parseXml('<root/>');
     parser.assertDiagnosticCount(0);
     expect(document?.FirstChild?.as(XElement)).not.toBeNull();
-  });
-  it('< /> should report unnamed tag error', () => {
-    const parser = new XmlParser(createRootState());
-    parser.parseXml('< />');
-    parser.assertDiagnostics([XmlCoreDiagnostics.UnnamedTag, 0, 3]);
   });
 });

@@ -1,4 +1,6 @@
 import { XmlDiagnostic } from '../Diagnostics/XmlDiagnostic.js';
+import { XmlDiagnosticDescriptor } from '../Diagnostics/XmlDiagnosticDescriptor.js';
+import { TextSpan } from '../Dom/TextSpan.js';
 import { XObject } from '../Dom/XObject.js';
 import { Stack } from '../Utils/Stack.js';
 import { StringBuilder } from '../Utils/StringBuilder.js';
@@ -51,5 +53,11 @@ export class XmlParserContext {
   }
   public set StateTag(tag: number) {
     this.stateTag = tag;
+  }
+
+  public addDiagnostic(descriptor: XmlDiagnosticDescriptor, positionOrSpan: number | TextSpan, ...args: unknown[]) {
+    const span = typeof positionOrSpan === 'number' ? new TextSpan(<number>positionOrSpan) : <TextSpan>positionOrSpan;
+    const diag = new XmlDiagnostic(descriptor, span, args);
+    this.diagnostics.push(diag);
   }
 }

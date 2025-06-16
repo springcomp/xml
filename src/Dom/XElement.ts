@@ -26,7 +26,7 @@ export class XElement extends XContainer implements INamedXObject {
     return this.hasEndBracket && this.IsNamed;
   }
   get IsNamed(): boolean {
-    return this.name.isValid;
+    return this.name.IsValid;
   }
   get IsSelfClosing(): boolean {
     return this.closingTag === this;

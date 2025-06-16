@@ -1,7 +1,7 @@
 import { XmlTreeParser } from './Parser/XmlParser.js';
 
 const parser = new XmlTreeParser();
-const document = parser.parse('<root />');
+const document = parser.parse('<ro~ot />');
 const fix = fixCircularReferences(document);
 console.log(`doc: ${JSON.stringify(document, fix, 2)}`);
 
