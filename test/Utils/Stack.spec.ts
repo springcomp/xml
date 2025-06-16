@@ -51,4 +51,11 @@ describe('Stack', () => {
     stack.clear();
     expect(stack.isEmpty()).toBe(true);
   });
+
+  it('should allow iterating over the values', () => {
+    const stack = new Stack<number>();
+    stack.push(1);
+    stack.push(2);
+    expect([...stack]).toStrictEqual([1, 2]);
+  });
 });
