@@ -63,4 +63,8 @@ export class Stack<T> {
   public push(item: T): void {
     this.array.push(item);
   }
+
+  [Symbol.iterator](): Iterator<T> {
+    return this.array[Symbol.iterator]();
+  }
 }

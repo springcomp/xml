@@ -29,6 +29,17 @@ export class XmlTreeParser {
     this.context.IsAtEndOfFile = true;
 
     const nodes = this.context.Nodes;
+
+    let loopMax = nodes.count() * XmlTreeParser.REPLAY_LIMIT_PER_CHARACTER;
+    while (nodes.count() > 1 && loopMax-- > 0) {
+      const replayCharacter = Ref.wrap(false);
+      const nextState = this.context.CurrentState.pushChar('\0', this.context, replayCharacter, true);
+      if (this.context.CurrentState === nextState) {
+        break;
+      }
+      this.context.CurrentState = nextState;
+    }
+
     if (nodes.count() != 1 || nodes.peek().as(XDocument) === null) {
       throw new InvalidParserStateException('Malformed state stack when ending all nodes');
     }
@@ -38,11 +49,11 @@ export class XmlTreeParser {
       document.end(this.context.Position);
     }
 
-    //for (int i = nodes.Length - 1; i >= 0; i--) {
-    //	var node = nodes[i];
-    //	if (!node.IsEnded) {
-    //		throw new InvalidParserStateException ($"Parser states did not end '{node}' node");
-    //	}
+    // for (const node of nodes) {
+    //   if (!node.IsEnded) {
+    //     throw new InvalidParserStateException(`Parser states did not end '{node}' node`);
+    //   }
+    // }
 
     return [document, this.context.Diagnostics];
   }
