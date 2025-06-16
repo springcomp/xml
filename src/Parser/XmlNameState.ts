@@ -45,7 +45,7 @@ export class XmlNameState extends XmlParserState {
           context.addDiagnostic(XmlCoreDiagnostics.ZeroLengthNameWithNamespace, context.Position);
           named.Name = new XName(name.substring(0, colonIndex));
         } else {
-          named.Name = new XName(name.substring(0, colonIndex), name.substring(colonIndex + 1));
+          named.Name = new XName(name.substring(colonIndex + 1), name.substring(0, colonIndex));
         }
       }
       return this.Parent;

@@ -6,6 +6,8 @@ import { XmlRootState } from '../../src/Parser/XmlRootState';
 import { expect } from 'vitest';
 import { StringBuilder } from '../../src/Utils/StringBuilder';
 import { XmlDiagnosticSeverity } from '../../src/Diagnostics/XmlDiagnosticSeverity';
+import { Stack } from '../../src/Utils/Stack';
+import { XObject } from '../../src/Dom/XObject';
 
 export type XmlAssert = (parser: XmlParser) => void;
 
@@ -41,6 +43,10 @@ export class XmlParser extends XmlTreeParser {
   public assertDiagnostics(...expectedDiags: [desc: XmlDiagnosticDescriptor, start: number, length: number][]) {
     const diags = this.getContext().Diagnostics;
     XmlAssertions.assertDiagnostics(diags, expectedDiags);
+  }
+  public assertPeek(depth: number): XObject {
+    const nodes = this.getContext().Nodes;
+    return XmlAssertions.assertPeek(nodes, depth);
   }
   public assertStateIs(stateName: string) {
     const currentState = this.getContext().CurrentState;
@@ -97,5 +103,14 @@ export class XmlAssertions {
     if (builder.byteLength != 0) {
       expect.fail(builder.toString());
     }
+  }
+  public static assertDepthAtLeast(nodes: Stack<XObject>, depth: number) {
+    if (nodes.count() < depth) {
+      expect.fail(`Node depth was ${nodes.count()}, expected at least ${depth}`);
+    }
+  }
+  public static assertPeek(nodes: Stack<XObject>, depth: number): XObject {
+    XmlAssertions.assertDepthAtLeast(nodes, depth);
+    return nodes.peek();
   }
 }

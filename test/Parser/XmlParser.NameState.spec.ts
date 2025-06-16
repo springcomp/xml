@@ -1,7 +1,9 @@
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { XmlRootState } from '../../src/Parser/XmlRootState';
 import { XmlParser } from './XmlParser';
 import { XmlCoreDiagnostics } from '../../src/Diagnostics/XmlCoreDiagnostics';
+import { XElement } from '../../src/Dom/XElement';
+import { XmlTagState } from '../../src/Parser/XmlTagState';
 
 describe('XmlNameState', () => {
   function createRootState(): XmlRootState {
@@ -9,13 +11,23 @@ describe('XmlNameState', () => {
   }
   it('should parse simple name', () => {
     const parser = new XmlParser(createRootState());
-    parser.parseXml('<root />');
-    // ...assert XName.Name === 'root', HasPrefix === false
+    parser.parseXml('<root /$>', p => {
+      p.assertStateIs(XmlTagState.StateName);
+      const object = p.assertPeek(1).as(XElement);
+      expect(object).not.toBeNull();
+      expect(object?.Name.HasPrefix).toBeFalsy();
+      expect(object?.Name.Name).toBe('root');
+    });
   });
   it('should parse prefixed name', () => {
     const parser = new XmlParser(createRootState());
-    parser.parseXml('<ns:root />');
-    // ...assert XName.Name === 'root', XName.Prefix === 'ns'
+    parser.parseXml('<ns:root /$>', p => {
+      p.assertStateIs(XmlTagState.StateName);
+      const object = p.assertPeek(1).as(XElement);
+      expect(object).not.toBeNull();
+      expect(object?.Name.Prefix).toBe('ns');
+      expect(object?.Name.Name).toBe('root');
+    });
   });
   it('should report error for empty prefix', () => {
     const parser = new XmlParser(createRootState());
