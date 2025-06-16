@@ -85,6 +85,8 @@ describe('XmlChar.IsNameChar', () => {
   it('should return false for specific BMP characters that are excluded', () => {
     // U+0024 DOLLAR SIGN ($) is not a valid XML NameStartChar character
     expect(XmlChar.IsNameChar('$')).toBe(false);
+    // U+037E GREEK QUESTION MARK (';') is not a valid XML NameStartChar character
+    expect(XmlChar.IsNameChar('\u037E')).toBe(false);
     // U+00A0 NO-BREAK SPACE is not a valid XML NameStartChar character
     expect(XmlChar.IsNameChar('\u00A0')).toBe(false);
     // U+00D7 MULTIPLICATION SIGN (×) is not a valid XML NameStartChar character
