@@ -1,4 +1,4 @@
-import { XmlDiagnosticSeverity } from './XmlDiagnosticSeverity';
+import { XmlDiagnosticSeverity } from './XmlDiagnosticSeverity.js';
 
 export class XmlDiagnosticDescriptor {
   private message?: string | null;
