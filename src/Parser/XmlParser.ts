@@ -1,6 +1,7 @@
 import { XmlDiagnostic } from '../Diagnostics/XmlDiagnostic.js';
 import { XDocument } from '../Dom/XDocument.js';
 import { Ref } from '../Utils/Ref.js';
+import { InvalidParserStateException } from './ParserStateExceptions.js';
 import { XmlParserContext } from './XmlParserContext.js';
 import { XmlRootState } from './XmlRootState.js';
 
@@ -29,7 +30,7 @@ export class XmlTreeParser {
 
     const nodes = this.context.Nodes;
     if (nodes.count() != 1 || nodes.peek().as(XDocument) === null) {
-      // TODO throw new InvalidParserStateException ("Malformed state stack when ending all nodes");
+      throw new InvalidParserStateException('Malformed state stack when ending all nodes');
     }
 
     const document = nodes.pop().as(XDocument);
