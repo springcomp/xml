@@ -1,9 +1,10 @@
+import { XmlDiagnostics } from '../Diagnostics/XmlDiagnostics.js';
 import { XDocument } from '../Dom/XDocument.js';
 import { Ref } from '../Utils/Ref.js';
 import { XmlParserContext } from './XmlParserContext.js';
 import { XmlRootState } from './XmlRootState.js';
 
-type ParseResult = [XDocument | null, null];
+type ParseResult = [XDocument | null, XmlDiagnostics[]];
 
 export class XmlTreeParser {
   private static readonly REPLAY_LIMIT_PER_CHARACTER = 10;
@@ -43,7 +44,7 @@ export class XmlTreeParser {
     //		throw new InvalidParserStateException ($"Parser states did not end '{node}' node");
     //	}
 
-    return [document, null];
+    return [document, this.context.Diagnostics];
   }
   private push(c: string): void {
     let done = false;
