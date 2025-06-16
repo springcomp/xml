@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
   "vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
-  "files": { "ignoreUnknown": false, "ignore": ["dist", "coverage"] },
+  "files": { "ignoreUnknown": false, "ignore": ["dist", "coverage", "mono"] },
   "formatter": {
     "enabled": true,
     "useEditorconfig": true,
@@ -12,7 +12,7 @@
     "lineWidth": 120,
     "attributePosition": "auto",
     "bracketSpacing": true,
-    "ignore": ["**/tests/fixtures/**/*", "**/dist", "**/coverage", "**/.vscode", "**/XmlCharTables.ts"]
+    "ignore": ["**/tests/fixtures/**/*", "**/dist", "**/coverage", "**/.vscode", "**/XmlCharTables.ts", "**/mono/**/*"]
   },
   "organizeImports": { "enabled": true },
   "linter": {
@@ -45,7 +45,8 @@
       "**/coverage",
       "**/__snapshots__",
       "src/**/*.js",
-      "src/**/XmlCharTables.ts"
+      "src/**/XmlCharTables.ts",
+      "**/mono"
     ]
   },
   "javascript": {
