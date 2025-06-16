@@ -6,6 +6,9 @@ export class XName {
     this.prefix = prefix ?? null;
     this.name = name;
   }
+  public equals(other: XName): boolean {
+    return this.name === this.name && this.prefix === other.Prefix;
+  }
   public get HasPrefix(): boolean {
     return this.prefix !== null;
   }

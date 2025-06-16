@@ -64,7 +64,33 @@ export class Stack<T> {
     this.array.push(item);
   }
 
+  /**
+   * Returns the top element of the stack without removing it, or undefined if the stack is empty.
+   * @param depth The optional depth at which to look for an element.
+   * @returns The top element or undefined if the stack is empty.
+   */
+  public tryPeek(depth?: number): T | null {
+    depth ??= 0;
+    if (this.isEmpty()) {
+      return null;
+    }
+    const length = this.array.length;
+    if (length < depth) {
+      return null;
+    }
+    return this.array[this.array.length - depth - 1];
+  }
+
   [Symbol.iterator](): Iterator<T> {
-    return this.array[Symbol.iterator]();
+    let index = this.array.length - 1;
+    return {
+      next: (): IteratorResult<T> => {
+        if (index >= 0) {
+          return { value: this.array[index--], done: false };
+        } else {
+          return { value: undefined, done: true };
+        }
+      },
+    };
   }
 }

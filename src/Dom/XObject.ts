@@ -41,8 +41,8 @@ export abstract class XObject {
   get Parent(): XObject | null {
     return this.parent;
   }
-  set Parent(parent: XObject) {
-    this.parent = parent;
+  set Parent(parent: XObject | null) {
+    this.parent = parent ?? null;
   }
   get Span(): TextSpan {
     return this.textSpan;

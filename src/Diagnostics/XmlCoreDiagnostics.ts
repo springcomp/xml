@@ -42,4 +42,32 @@ export class XmlCoreDiagnostics {
     XmlDiagnosticSeverity.Error,
     "Self-closing tag is malformed due to unexpected character '{0}' after the forward slash.",
   );
+
+  public static UnclosedTag = new XmlDiagnosticDescriptor(
+    'UnclosedTag',
+    'Unclosed tag',
+    XmlDiagnosticSeverity.Error,
+    "The tag '{0}' has no matching closing tag",
+  );
+
+  public static UnmatchedClosingTag = new XmlDiagnosticDescriptor(
+    'UnmatchedClosingTag',
+    'Unmatched closing tag',
+    XmlDiagnosticSeverity.Error,
+    "The closing tag '{0}' does not match any open tag",
+  );
+
+  public static IncompleteClosingTag = new XmlDiagnosticDescriptor(
+    'IncompleteClosingTag',
+    'Incomplete closing tag',
+    XmlDiagnosticSeverity.Error,
+    "Closing tag is incomplete due to unexpected character '{0}'",
+  );
+
+  public static UnnamedClosingTag = new XmlDiagnosticDescriptor(
+    'UnnamedClosingTag',
+    'Unnamed closing tag',
+    XmlDiagnosticSeverity.Error,
+    'The closing tag ended without a name',
+  );
 }

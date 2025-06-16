@@ -35,7 +35,6 @@ export class XmlNameState extends XmlParserState {
       } else {
         const name = context.KeywordBuilder.toString();
         const colonIndex = name.indexOf(':');
-        console.log(`name: ${name}, colonIndex: ${colonIndex}`);
         if (colonIndex < 0) {
           named.Name = new XName(name);
         } else if (colonIndex === 0) {
@@ -48,14 +47,13 @@ export class XmlNameState extends XmlParserState {
           named.Name = new XName(name.substring(colonIndex + 1), name.substring(0, colonIndex));
         }
       }
+      console.log(`XmlNameState: naming thing: ${named.Name.Name}`);
       return this.Parent;
     }
 
-    console.log(`CHARACTER ${c}`);
     if (c == ':') {
       const name = context.KeywordBuilder.toString();
       const colonIndex = name.indexOf(':');
-      console.log(`name: ${name}, colonIndex: ${colonIndex}`);
       if (colonIndex != -1) {
         context.addDiagnostic(XmlCoreDiagnostics.MultipleNamespaceSeparators, context.Position);
       }

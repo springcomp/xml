@@ -26,3 +26,8 @@ export abstract class XContainer extends XNode {
     this.lastChild = node;
   }
 }
+
+// biome-ignore lint: lint/suspicious/noExplicitAny
+export function isXContainer(obj: any): obj is XContainer {
+  return obj && typeof obj === 'object' && 'addChildNode' in obj && 'firstChild' in obj && 'lastChild' in obj;
+}

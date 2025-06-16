@@ -7,6 +7,11 @@ describe('XmlTagState', () => {
   function createRootState(): XmlRootState {
     return new XmlRootState();
   }
+  it('< root/> should report malformed opening tag error', () => {
+    const parser = new XmlParser(createRootState());
+    parser.parseXml('< root />');
+    parser.assertDiagnosticCount(1);
+  });
   it('<root/ > should report malformed self-closing tag error', () => {
     const parser = new XmlParser(createRootState());
     parser.parseXml('<root/ >');

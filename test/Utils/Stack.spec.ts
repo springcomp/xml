@@ -51,11 +51,23 @@ describe('Stack', () => {
     stack.clear();
     expect(stack.isEmpty()).toBe(true);
   });
-
+  it('tryPeek() should return the top element or undefined if empty', () => {
+    const stack = new Stack<number>();
+    expect(stack.tryPeek()).toBeNull();
+    stack.push(10);
+    expect(stack.tryPeek()).toBe(10);
+    stack.push(20);
+    expect(stack.tryPeek()).toBe(20);
+    expect(stack.tryPeek(1)).toBe(10);
+    stack.pop();
+    expect(stack.tryPeek()).toBe(10);
+    stack.pop();
+    expect(stack.tryPeek()).toBeNull();
+  });
   it('should allow iterating over the values', () => {
     const stack = new Stack<number>();
     stack.push(1);
     stack.push(2);
-    expect([...stack]).toStrictEqual([1, 2]);
+    expect([...stack]).toStrictEqual([2, 1]);
   });
 });

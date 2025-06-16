@@ -1,4 +1,5 @@
 import { INamedXObject } from './INamedXObject.js';
+import { XClosingTag } from './XClosingTag.js';
 import { XContainer } from './XContainer.js';
 import { XName } from './XName.js';
 import { XNode } from './XNode.js';
@@ -13,8 +14,10 @@ export class XElement extends XContainer implements INamedXObject {
   }
   close(node: XNode): void {
     this.closingTag = node;
-    // if this.closingTag is XClosingTag
-    //   this.closingTag.Parent = this.Parent;
+    const closingTag = node.as(XClosingTag);
+    if (closingTag != null) {
+      closingTag.Parent = this.Parent;
+    }
   }
   get ClosingTag(): XNode | null {
     return this.closingTag;
@@ -22,7 +25,7 @@ export class XElement extends XContainer implements INamedXObject {
   get IsClosed(): boolean {
     return this.closingTag !== null;
   }
-  get IsEnded(): boolean {
+  get IsComplete(): boolean {
     return this.hasEndBracket && this.IsNamed;
   }
   get IsNamed(): boolean {
