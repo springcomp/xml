@@ -79,7 +79,7 @@ export class XmlTagState extends XmlParserState {
 
     context.StateTag = XmlTagState.FREE;
 
-    if (!element.IsNamed && XmlChar.IsNameStartChar(c)) {
+    if (!element.IsNamed && (XmlChar.IsNameStartChar(c) || c == ':')) {
       replayCharacter.Value = true;
       return this.nameState;
     }

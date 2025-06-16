@@ -33,11 +33,34 @@ export class XmlNameState extends XmlParserState {
       if (context.KeywordBuilder.byteLength === 0) {
         named.Name = XName.Empty;
       } else {
-        // TODO: handle ':' and prefix
         const name = context.KeywordBuilder.toString();
-        named.Name = new XName(name);
+        const colonIndex = name.indexOf(':');
+        console.log(`name: ${name}, colonIndex: ${colonIndex}`);
+        if (colonIndex < 0) {
+          named.Name = new XName(name);
+        } else if (colonIndex === 0) {
+          context.addDiagnostic(XmlCoreDiagnostics.ZeroLengthNamespace, context.Position);
+          named.Name = new XName(name.substring(1));
+        } else if (colonIndex === name.length - 1) {
+          context.addDiagnostic(XmlCoreDiagnostics.ZeroLengthNameWithNamespace, context.Position);
+          named.Name = new XName(name.substring(0, colonIndex));
+        } else {
+          named.Name = new XName(name.substring(0, colonIndex), name.substring(colonIndex + 1));
+        }
       }
       return this.Parent;
+    }
+
+    console.log(`CHARACTER ${c}`);
+    if (c == ':') {
+      const name = context.KeywordBuilder.toString();
+      const colonIndex = name.indexOf(':');
+      console.log(`name: ${name}, colonIndex: ${colonIndex}`);
+      if (colonIndex != -1) {
+        context.addDiagnostic(XmlCoreDiagnostics.MultipleNamespaceSeparators, context.Position);
+      }
+      context.KeywordBuilder.append(c);
+      return this;
     }
 
     if (XmlChar.IsNameChar(c)) {

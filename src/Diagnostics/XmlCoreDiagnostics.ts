@@ -8,6 +8,21 @@ export class XmlCoreDiagnostics {
     XmlDiagnosticSeverity.Error,
     'The tag ended without a name.',
   );
+  public static ZeroLengthNamespace = new XmlDiagnosticDescriptor(
+    'ZeroLengthNamespace',
+    'Zero-length namespace',
+    XmlDiagnosticSeverity.Error,
+  );
+  public static ZeroLengthNameWithNamespace = new XmlDiagnosticDescriptor(
+    'ZeroLengthNameWithNamespace',
+    'Zero-length name with non-empty namespace.',
+    XmlDiagnosticSeverity.Error,
+  );
+  public static MultipleNamespaceSeparators = new XmlDiagnosticDescriptor(
+    'MultipleNamespaceSeparators',
+    'Name has multiple namespace separators',
+    XmlDiagnosticSeverity.Error,
+  );
   public static InvalidNameCharacter = new XmlDiagnosticDescriptor(
     'InvalidNameCharacter',
     'Name has invalid character',

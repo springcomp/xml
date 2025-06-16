@@ -37,7 +37,7 @@ export class XmlRootState extends XmlParserState {
       case XmlRootState.FREE:
         break;
       case XmlRootState.BRACKET:
-        if (XmlChar.IsNameStartChar(c) || XmlChar.IsWhitespace(c)) {
+        if (XmlChar.IsNameStartChar(c) || XmlChar.IsWhitespace(c) || c == ':') {
           replayCharacter.Value = true;
           return this.tagState;
         }
