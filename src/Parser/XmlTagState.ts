@@ -1,3 +1,5 @@
+import { XmlCoreDiagnostics } from '../Diagnostics/XmlCoreDiagnostics.js';
+import { XmlDiagnostic } from '../Diagnostics/XmlDiagnostic.js';
 import { XContainer } from '../Dom/XContainer.js';
 import { XElement } from '../Dom/XElement.js';
 import { Ref } from '../Utils/Ref.js';
@@ -7,13 +9,14 @@ import { XmlParserContext } from './XmlParserContext.js';
 import { XmlParserState } from './XmlParserState.js';
 
 export class XmlTagState extends XmlParserState {
+  public static readonly StateName = 'XmlTagState';
   // states
   private static readonly STARTOFFSET = 1; // <
   private static readonly MAYBE_SELF_CLOSING = 2;
 
   private nameState: XmlNameState;
   constructor(nameState?: XmlNameState) {
-    super('XmlTagState');
+    super(XmlTagState.StateName);
     this.nameState = this.Adopt(nameState ?? new XmlNameState());
   }
   public onChar(c: string, context: XmlParserContext, replayCharacter: Ref<boolean>): XmlParserState {
@@ -34,7 +37,7 @@ export class XmlTagState extends XmlParserState {
       element.end(context.Position);
 
       if (!element.IsNamed) {
-        // TODO: error (XmlCoreDiagnostics.UnnamedTag, element.Span);
+        context.Diagnostics.push(new XmlDiagnostic(XmlCoreDiagnostics.UnnamedTag, element.Span));
       }
 
       if (context.StateTag == XmlTagState.MAYBE_SELF_CLOSING) {

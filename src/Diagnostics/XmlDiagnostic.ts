@@ -1,7 +1,7 @@
 import { TextSpan } from '../Dom/TextSpan';
 import { XmlDiagnosticDescriptor } from './XmlDiagnosticDescriptor';
 
-export class XmlDiagnostics {
+export class XmlDiagnostic {
   private descriptor: XmlDiagnosticDescriptor;
   private span: TextSpan;
   constructor(descriptor: XmlDiagnosticDescriptor, span: TextSpan) {

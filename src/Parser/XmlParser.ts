@@ -1,10 +1,10 @@
-import { XmlDiagnostics } from '../Diagnostics/XmlDiagnostics.js';
+import { XmlDiagnostic } from '../Diagnostics/XmlDiagnostic.js';
 import { XDocument } from '../Dom/XDocument.js';
 import { Ref } from '../Utils/Ref.js';
 import { XmlParserContext } from './XmlParserContext.js';
 import { XmlRootState } from './XmlRootState.js';
 
-type ParseResult = [XDocument | null, XmlDiagnostics[]];
+export type ParseResult = [XDocument | null, XmlDiagnostic[]];
 
 export class XmlTreeParser {
   private static readonly REPLAY_LIMIT_PER_CHARACTER = 10;
@@ -13,10 +13,6 @@ export class XmlTreeParser {
   constructor(rootState?: XmlRootState) {
     this.rootState = rootState ?? new XmlRootState();
   }
-  // TODO: REMOVE the _getContext method
-  public _getContext(): XmlParserContext {
-    return this.context;
-  }
   public parse(xml: string): ParseResult {
     this.reset();
 
@@ -24,7 +20,10 @@ export class XmlTreeParser {
     chars.forEach(this.push, this);
     return this.endAllNodes();
   }
-  private endAllNodes(): ParseResult {
+  protected getContext(): XmlParserContext {
+    return this.context;
+  }
+  protected endAllNodes(): ParseResult {
     this.context.Position++;
     this.context.IsAtEndOfFile = true;
 
@@ -46,7 +45,7 @@ export class XmlTreeParser {
 
     return [document, this.context.Diagnostics];
   }
-  private push(c: string): void {
+  protected push(c: string): void {
     let done = false;
     do {
       for (let loopLimit = 0; loopLimit < XmlTreeParser.REPLAY_LIMIT_PER_CHARACTER; loopLimit++) {
@@ -77,7 +76,7 @@ export class XmlTreeParser {
 
     this.context.Position++;
   }
-  private reset(): void {
+  protected reset(): void {
     this.context.CurrentState = this.rootState;
     this.context.PreviousState = this.rootState;
     this.context.Nodes.clear();

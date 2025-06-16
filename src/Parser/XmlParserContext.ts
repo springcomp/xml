@@ -1,4 +1,4 @@
-import { XmlDiagnostics } from '../Diagnostics/XmlDiagnostics.js';
+import { XmlDiagnostic } from '../Diagnostics/XmlDiagnostic.js';
 import { XObject } from '../Dom/XObject.js';
 import { Stack } from '../Utils/Stack.js';
 import { StringBuilder } from '../Utils/StringBuilder.js';
@@ -6,7 +6,7 @@ import { NullParserState, XmlParserState } from './XmlParserState.js';
 
 export class XmlParserContext {
   private currentState: XmlParserState = NullParserState.Instance;
-  private diagnostics: XmlDiagnostics[] = [];
+  private diagnostics: XmlDiagnostic[] = [];
   private isAtEndOfFile = false;
   private readonly keywordBuilder = new StringBuilder();
   private position = 0;
@@ -16,7 +16,7 @@ export class XmlParserContext {
   public get CurrentState(): XmlParserState {
     return this.currentState;
   }
-  public get Diagnostics(): XmlDiagnostics[] {
+  public get Diagnostics(): XmlDiagnostic[] {
     return this.diagnostics;
   }
   public get IsAtEndOfFile(): boolean {

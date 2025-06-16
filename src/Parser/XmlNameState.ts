@@ -6,8 +6,9 @@ import { XmlParserState } from './XmlParserState.js';
 import { XName } from '../Dom/XName.js';
 
 export class XmlNameState extends XmlParserState {
+  public static readonly StateName = 'XmlNameState';
   constructor() {
-    super('XmlNameState');
+    super(XmlNameState.StateName);
   }
   protected onChar(c: string, context: XmlParserContext, _replayCharacter: Ref<boolean>): XmlParserState {
     const node = context.Nodes.peek();

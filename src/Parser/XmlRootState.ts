@@ -6,6 +6,7 @@ import { XmlParserState } from './XmlParserState.js';
 import { XmlTagState } from './XmlTagState.js';
 
 export class XmlRootState extends XmlParserState {
+  public static readonly StateName = 'XmlRootState';
   // states
   private static FREE = 0 as const;
   private static BRACKET = 1 as const;
@@ -13,7 +14,7 @@ export class XmlRootState extends XmlParserState {
 
   private tagState: XmlTagState;
   constructor(tagState?: XmlTagState) {
-    super('XmlRootState');
+    super(XmlRootState.StateName);
     this.tagState = this.Adopt(tagState ?? new XmlTagState());
   }
   public createDocument(): XDocument {
