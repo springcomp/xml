@@ -7,9 +7,9 @@ describe('XmlParser', () => {
   function createRootState(): XmlRootState {
     return new XmlRootState();
   }
-  it('should parse self-closing single-element XML document', () => {
+  it.each(['<root/>', '<root />', '< root/>'])('should parse self-closing single-element XML document', xml => {
     const parser = new XmlParser(createRootState());
-    const [document, _] = parser.parseXml('<root/>');
+    const [document, _] = parser.parseXml(xml);
     parser.assertDiagnosticCount(0);
     expect(document?.FirstChild?.as(XElement)).not.toBeNull();
   });

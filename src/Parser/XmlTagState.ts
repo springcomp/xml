@@ -12,7 +12,10 @@ export class XmlTagState extends XmlParserState {
   public static readonly StateName = 'XmlTagState';
   // states
   private static readonly STARTOFFSET = 1; // <
-  private static readonly MAYBE_SELF_CLOSING = 2;
+  private static readonly FREE = 0;
+  private static readonly MAYBE_SELF_CLOSING = 1;
+  private static readonly ATTEMPT_RECOVERY = 2;
+  private static readonly RECOVERY_FOUND_WHITESPACE = 3;
 
   private nameState: XmlNameState;
   constructor(nameState?: XmlNameState) {
@@ -57,6 +60,25 @@ export class XmlTagState extends XmlParserState {
       return this;
     }
 
+    if (context.StateTag == XmlTagState.MAYBE_SELF_CLOSING) {
+      context.addDiagnostic(XmlCoreDiagnostics.MalformedSelfClosingTag, context.Position, c);
+      return this;
+    }
+
+    if (context.StateTag == XmlTagState.ATTEMPT_RECOVERY) {
+      if (XmlChar.IsWhitespace(c)) {
+        context.StateTag = XmlTagState.RECOVERY_FOUND_WHITESPACE;
+      }
+      return this;
+    }
+    if (context.StateTag == XmlTagState.RECOVERY_FOUND_WHITESPACE) {
+      if (XmlChar.IsNameStartChar(c)) {
+        return this;
+      }
+    }
+
+    context.StateTag = XmlTagState.FREE;
+
     if (!element.IsNamed && XmlChar.IsNameStartChar(c)) {
       replayCharacter.Value = true;
       return this.nameState;
@@ -66,6 +88,12 @@ export class XmlTagState extends XmlParserState {
       return this;
     }
 
+    // XmlNameState will have reported an error already
+    if (context.PreviousState.Name === 'XmlNameState') {
+      context.addDiagnostic(XmlCoreDiagnostics.MalformedTag, context.Position, c);
+    }
+
+    context.StateTag = XmlTagState.ATTEMPT_RECOVERY;
     return this;
   }
 }

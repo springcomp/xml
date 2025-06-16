@@ -14,4 +14,17 @@ export class XmlCoreDiagnostics {
     XmlDiagnosticSeverity.Error,
     "Name was ended by invalid name character '{0}'",
   );
+
+  public static MalformedTag = new XmlDiagnosticDescriptor(
+    'MalformedTag',
+    'Malformed tag',
+    XmlDiagnosticSeverity.Error,
+    "Tag is malformed due to unexpected character '{0}'.",
+  );
+  public static MalformedSelfClosingTag = new XmlDiagnosticDescriptor(
+    'MalformedSelfClosingTag',
+    'Malformed tag',
+    XmlDiagnosticSeverity.Error,
+    "Self-closing tag is malformed due to unexpected character '{0}' after the forward slash.",
+  );
 }
