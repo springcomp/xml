@@ -10,16 +10,16 @@ describe('XmlTagState', () => {
   it('< root/> should report malformed opening tag error', () => {
     const parser = new XmlParser(createRootState());
     parser.parseXml('< root />');
-    parser.assertDiagnosticCount(1);
+    parser.assertDiagnostics([XmlCoreDiagnostics.MalformedTagOpening, 1, 0]);
   });
   it('<root/ > should report malformed self-closing tag error', () => {
     const parser = new XmlParser(createRootState());
     parser.parseXml('<root/ >');
-    parser.assertDiagnosticCount(1);
+    parser.assertDiagnostics([XmlCoreDiagnostics.MalformedSelfClosingTag, 6, 0]);
   });
   it('< /> should report unnamed tag error', () => {
     const parser = new XmlParser(createRootState());
     parser.parseXml('< />');
-    parser.assertDiagnostics([XmlCoreDiagnostics.UnnamedTag, 0, 3]);
+    parser.assertDiagnostics([XmlCoreDiagnostics.MalformedTagOpening, 1, 0], [XmlCoreDiagnostics.UnnamedTag, 0, 3]);
   });
 });

@@ -93,12 +93,18 @@ export class XmlClosingTagState extends XmlParserState {
       replayCharacter.Value = true;
       return this.Parent;
     }
-    if (XmlChar.IsWhitespace(c)) {
-      return this;
-    }
+
     if (!ct.IsNamed && /[A-Za-z_]/.test(c)) {
       replayCharacter.Value = true;
       return this.nameState;
+    }
+
+    if (!ct.IsNamed && ct.Span.Start + XmlClosingTagState.STARTOFFSET == context.Position) {
+      context.addDiagnostic(XmlCoreDiagnostics.MalformedTagClosing, context.Position, c);
+    }
+
+    if (XmlChar.IsWhitespace(c)) {
+      return this;
     }
 
     replayCharacter.Value = true;

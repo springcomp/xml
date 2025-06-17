@@ -30,6 +30,19 @@ export class XmlCoreDiagnostics {
     "Name was ended by invalid name character '{0}'",
   );
 
+  public static MalformedTagOpening = new XmlDiagnosticDescriptor(
+    'MalformedTagOpening',
+    'Malformed tag',
+    XmlDiagnosticSeverity.Error,
+    "Tag is malformed due to unexpected character '{0}'.",
+  );
+  public static MalformedTagClosing = new XmlDiagnosticDescriptor(
+    'MalformedTagClosing',
+    'Malformed closing tag',
+    XmlDiagnosticSeverity.Error,
+    "Closing tag is malformed due to unexpected character '{0}'.",
+  );
+
   public static MalformedTag = new XmlDiagnosticDescriptor(
     'MalformedTag',
     'Malformed tag',

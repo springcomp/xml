@@ -65,6 +65,7 @@ export class XmlTreeParser {
         const nextState = this.context.CurrentState.pushChar(c, this.context, replayCharacter, false);
 
         if (nextState === this.context.CurrentState) {
+          this.context.pulseParsingState();
           done = true;
           break;
         }
@@ -75,6 +76,7 @@ export class XmlTreeParser {
         this.context.StateTag = 0;
 
         this.context.KeywordBuilder.clear();
+        this.context.resetParsingState();
 
         if (!replayCharacter.value) {
           done = true;

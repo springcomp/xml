@@ -8,6 +8,7 @@ import { NullParserState, XmlParserState } from './XmlParserState.js';
 
 export class XmlParserContext {
   private currentState: XmlParserState = NullParserState.Instance;
+  private currentStateLength = 0;
   private diagnostics: XmlDiagnostic[] = [];
   private isAtEndOfFile = false;
   private readonly keywordBuilder = new StringBuilder();
@@ -55,9 +56,26 @@ export class XmlParserContext {
     this.stateTag = tag;
   }
 
-  public addDiagnostic(descriptor: XmlDiagnosticDescriptor, positionOrSpan: number | TextSpan, ...args: unknown[]) {
+  public addDiagnostic(descriptor: XmlDiagnosticDescriptor, positionOrSpan?: number | TextSpan, ...args: unknown[]) {
+    if (positionOrSpan === undefined) {
+      positionOrSpan = this.Position;
+    }
     const span = typeof positionOrSpan === 'number' ? new TextSpan(<number>positionOrSpan) : <TextSpan>positionOrSpan;
     const diag = new XmlDiagnostic(descriptor, span, args);
     this.diagnostics.push(diag);
+  }
+  /**
+   * Returns whether parsing is entering the current state
+   * for the first time.
+   * @returns true if this is the first time entering the state.
+   */
+  public enteringParsingState(): boolean {
+    return this.currentStateLength == 0;
+  }
+  public pulseParsingState(): void {
+    this.currentStateLength++;
+  }
+  public resetParsingState(): void {
+    this.currentStateLength = 0;
   }
 }

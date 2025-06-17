@@ -84,6 +84,10 @@ export class XmlTagState extends XmlParserState {
       return this.nameState;
     }
 
+    if (!element.IsNamed && element.Span.Start + XmlTagState.STARTOFFSET === context.Position) {
+      context.addDiagnostic(XmlCoreDiagnostics.MalformedTagOpening, context.Position, c);
+    }
+
     if (XmlChar.IsWhitespace(c)) {
       return this;
     }
