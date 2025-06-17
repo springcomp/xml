@@ -1,7 +1,9 @@
 import { XmlTreeParser } from './Parser/XmlParser.js';
 
+const text = process.argv.length > 2 ? process.argv[2] : '<root />';
+
 const parser = new XmlTreeParser();
-const document = parser.parse('< root></ root >');
+const document = parser.parse(text);
 const fix = fixCircularReferences(document);
 console.log(`doc: ${JSON.stringify(document, fix, 2)}`);
 

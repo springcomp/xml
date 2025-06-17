@@ -13,4 +13,18 @@ describe('XmlParser', () => {
     parser.assertDiagnosticCount(0);
     expect(document?.FirstChild?.as(XElement)).not.toBeNull();
   });
+  it.each(['<a><b/></a>', '<a><b></b></a>'])('should parse simple matching tags document', xml => {
+    const parser = new XmlParser(createRootState());
+    const [document, _] = parser.parseXml(xml);
+    parser.assertDiagnosticCount(0);
+    expect(document?.FirstChild?.as(XElement)?.Name.Name).toBe('a');
+    expect(document?.FirstChild?.as(XElement)?.FirstChild?.as(XElement)?.Name.Name).toBe('b');
+  });
+  it.each(['<a><b>text</b></a>', '<a><b>text</b><c/></a>'])('should parse simple XML document', xml => {
+    const parser = new XmlParser(createRootState());
+    const [document, _] = parser.parseXml(xml);
+    parser.assertDiagnosticCount(0);
+    expect(document?.FirstChild?.as(XElement)?.Name.Name).toBe('a');
+    expect(document?.FirstChild?.as(XElement)?.FirstChild?.as(XElement)?.Name.Name).toBe('b');
+  });
 });

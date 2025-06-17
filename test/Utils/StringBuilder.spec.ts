@@ -2,6 +2,8 @@
 import { describe, expect, it } from 'vitest';
 
 import { StringBuilder } from '../../src/Utils/StringBuilder.js';
+import { before } from 'node:test';
+import { stringify } from 'querystring';
 
 describe('StringBuilder', () => {
   const encoder = new TextEncoder();
@@ -79,6 +81,32 @@ describe('StringBuilder', () => {
       sut.append('Goodbye').append(' World!');
       expect(sut.byteLength).toBe(14);
       expect(sut.toString()).toBe('Goodbye World!');
+    });
+  });
+
+  describe('length setter', () => {
+    it('truncates the buffer when set to a smaller value', () => {
+      const expectedByteLength = new TextEncoder().encode('Hello').byteLength;
+      const builder = new StringBuilder().append('Hello World!');
+      builder.byteLength = 5;
+      expect(builder.toString()).toBe('Hello');
+      expect(builder.byteLength).toBe(expectedByteLength);
+    });
+
+    it('does nothing if set to a larger value', () => {
+      const expectedByteLength = new TextEncoder().encode('Hello').byteLength;
+      const builder = new StringBuilder().append('Hello');
+      builder.byteLength = 10;
+      expect(builder.toString()).toBe('Hello');
+      expect(builder.byteLength).toBe(expectedByteLength);
+    });
+
+    it('does nothing if set to a negative value', () => {
+      const expectedByteLength = new TextEncoder().encode('Hello').byteLength;
+      const builder = new StringBuilder().append('Hello');
+      builder.byteLength = -1;
+      expect(builder.toString()).toBe('Hello');
+      expect(builder.byteLength).toBe(expectedByteLength);
     });
   });
 

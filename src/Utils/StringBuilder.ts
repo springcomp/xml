@@ -47,6 +47,22 @@ export class StringBuilder {
     return this.#len;
   }
 
+  /**
+   * Sets the current length in bytes of the builder, truncating if possible.
+   * If the buffer cannot be truncated (len > current length), does nothing.
+   */
+  set byteLength(len: number) {
+    if (len === 0) {
+      this.clear();
+      return;
+    }
+    if (len <= this.#len && len > 0) {
+      for (let i = len; i < this.#len; i++) {
+        this.#array[i] = 0;
+      }
+      this.#len = len;
+    }
+  }
   /** Creates a new instance of the {@link StringBuilder} class. */
   constructor(options: StringBuilderOptions = {}) {
     const { initialSize = 1048576, growthFactor = 0.2 } = options;

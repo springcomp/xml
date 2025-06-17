@@ -5,6 +5,7 @@ import { XmlClosingTagState } from './XmlClosingTagState.js';
 import { XmlParserContext } from './XmlParserContext.js';
 import { XmlParserState } from './XmlParserState.js';
 import { XmlTagState } from './XmlTagState.js';
+import { XmlTextState } from './XmlTextState.js';
 
 export class XmlRootState extends XmlParserState {
   public static readonly StateName = 'XmlRootState';
@@ -14,11 +15,13 @@ export class XmlRootState extends XmlParserState {
   protected static MAXCONST = 1 as const;
 
   private tagState: XmlTagState;
+  private textState: XmlTextState;
   private closingTagState: XmlClosingTagState;
-  constructor(tagState?: XmlTagState, closingTagState?: XmlClosingTagState) {
+  constructor(tagState?: XmlTagState, closingTagState?: XmlClosingTagState, textState?: XmlTextState) {
     super(XmlRootState.StateName);
     this.tagState = this.Adopt(tagState ?? new XmlTagState());
     this.closingTagState = this.Adopt(closingTagState ?? new XmlClosingTagState());
+    this.textState = this.Adopt(textState ?? new XmlTextState());
   }
   public createDocument(): XDocument {
     return new XDocument();
@@ -38,6 +41,10 @@ export class XmlRootState extends XmlParserState {
     }
     switch (context.StateTag) {
       case XmlRootState.FREE:
+        if (!XmlChar.IsWhitespace(c)) {
+          replayCharacter.Value = true;
+          return this.textState;
+        }
         break;
       case XmlRootState.BRACKET:
         if (c === '/') {
