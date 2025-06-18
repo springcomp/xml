@@ -2,8 +2,6 @@
 import { describe, expect, it } from 'vitest';
 
 import { StringBuilder } from '../../src/Utils/StringBuilder.js';
-import { before } from 'node:test';
-import { stringify } from 'querystring';
 
 describe('StringBuilder', () => {
   const encoder = new TextEncoder();
@@ -91,6 +89,13 @@ describe('StringBuilder', () => {
       builder.byteLength = 5;
       expect(builder.toString()).toBe('Hello');
       expect(builder.byteLength).toBe(expectedByteLength);
+    });
+
+    it('clears the buffer if set to zero', () => {
+      const builder = new StringBuilder().append('Hello');
+      builder.byteLength = 0;
+      expect(builder.toString()).toBe('');
+      expect(builder.byteLength).toBe(0);
     });
 
     it('does nothing if set to a larger value', () => {

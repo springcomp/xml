@@ -51,7 +51,7 @@ describe('Stack', () => {
     stack.clear();
     expect(stack.isEmpty()).toBe(true);
   });
-  it('tryPeek() should return the top element or undefined if empty', () => {
+  it('tryPeek() should return the top element or null if empty', () => {
     const stack = new Stack<number>();
     expect(stack.tryPeek()).toBeNull();
     stack.push(10);
@@ -63,6 +63,12 @@ describe('Stack', () => {
     expect(stack.tryPeek()).toBe(10);
     stack.pop();
     expect(stack.tryPeek()).toBeNull();
+  });
+  it('tryPeek() should return null if depth is greater than stack length', () => {
+    const stack = new Stack<number>();
+    expect(stack.tryPeek(1)).toBeNull();
+    stack.push(10);
+    expect(stack.tryPeek(2)).toBeNull();
   });
   it('should allow iterating over the values', () => {
     const stack = new Stack<number>();
