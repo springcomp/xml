@@ -107,7 +107,7 @@ export class XmlTagState extends XmlParserState {
     }
 
     // XmlNameState will have reported an error already
-    if (context.PreviousState.Name === 'XmlNameState') {
+    if (context.PreviousState?.Name === 'XmlNameState') {
       context.addDiagnostic(XmlCoreDiagnostics.MalformedTag, context.Position, c);
     }
 

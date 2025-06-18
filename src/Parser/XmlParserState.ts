@@ -28,7 +28,7 @@ export abstract class XmlParserState {
     context: XmlParserContext,
     replayCharacter: Ref<boolean>,
     isEndOfFile: boolean,
-  ): XmlParserState {
+  ): XmlParserState | null {
     console.log(`${this.name}.pushChar: ${c} at position ${context.Position}; StateTag: ${context.StateTag}`);
     const nextState = this.onChar(c, context, replayCharacter, isEndOfFile);
     if (nextState !== context.CurrentState) {
@@ -41,7 +41,7 @@ export abstract class XmlParserState {
     _context: XmlParserContext,
     _replayCharacter: Ref<boolean>,
     _isEndOfFile: boolean,
-  ): XmlParserState;
+  ): XmlParserState | null;
 }
 export class NullParserState extends XmlParserState {
   /**

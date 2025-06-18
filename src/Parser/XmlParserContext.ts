@@ -4,19 +4,19 @@ import { TextSpan } from '../Dom/TextSpan.js';
 import { XObject } from '../Dom/XObject.js';
 import { Stack } from '../Utils/Stack.js';
 import { StringBuilder } from '../Utils/StringBuilder.js';
-import { NullParserState, XmlParserState } from './XmlParserState.js';
+import { XmlParserState } from './XmlParserState.js';
 
 export class XmlParserContext {
-  private currentState: XmlParserState = NullParserState.Instance;
+  private currentState: XmlParserState | null = null;
   private currentStateLength = 0;
   private diagnostics: XmlDiagnostic[] = [];
   private isAtEndOfFile = false;
   private readonly keywordBuilder = new StringBuilder();
   private position = 0;
-  private previousState: XmlParserState = NullParserState.Instance;
+  private previousState: XmlParserState | null = null;
   private readonly nodes = new Stack<XObject>();
   private stateTag = 0;
-  public get CurrentState(): XmlParserState {
+  public get CurrentState(): XmlParserState | null {
     return this.currentState;
   }
   public get Diagnostics(): XmlDiagnostic[] {
@@ -37,16 +37,16 @@ export class XmlParserContext {
   public get Position() {
     return this.position;
   }
-  public get PreviousState(): XmlParserState {
+  public get PreviousState(): XmlParserState | null {
     return this.previousState;
   }
-  public set CurrentState(state: XmlParserState) {
+  public set CurrentState(state: XmlParserState | null) {
     this.currentState = state;
   }
   public set Position(position: number) {
     this.position = position;
   }
-  public set PreviousState(state: XmlParserState) {
+  public set PreviousState(state: XmlParserState | null) {
     this.previousState = state;
   }
   public get StateTag(): number {

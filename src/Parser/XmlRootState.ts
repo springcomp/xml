@@ -44,7 +44,7 @@ export class XmlRootState extends XmlParserState {
     context: XmlParserContext,
     replayCharacter: Ref<boolean>,
     isEndOfFile: boolean,
-  ): XmlParserState {
+  ): XmlParserState | null {
     if (isEndOfFile) {
       const node = context.Nodes.peek();
       if (node.is(XComment)) {

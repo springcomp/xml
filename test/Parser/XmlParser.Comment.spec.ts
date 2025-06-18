@@ -17,7 +17,7 @@ describe('XmlCommentState', () => {
     ['<r/><!-- -', 11, 0],
     ['<r/><!-- ', 10, 0],
     ['<r/><!--', 9, 0],
-  ])('should report incomplete end comment due to EOF', (xml, start, end) => {
+  ])('should report incomplete comment due to EOF', (xml, start, end) => {
     const parser = new XmlParser(createRootState());
     parser.parseXml(xml);
     parser.assertDiagnostics([XmlCoreDiagnostics.IncompleteCommentEof, start, end]);

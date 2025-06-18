@@ -37,8 +37,8 @@ export class XmlTreeParser {
       let loopMax = nodes.count() * XmlTreeParser.REPLAY_LIMIT_PER_CHARACTER;
       while (nodes.count() >= 1 && loopMax-- > 0) {
         const replayCharacter = Ref.wrap(false);
-        const nextState = this.context.CurrentState.pushChar('\0', this.context, replayCharacter, true);
-        if (this.context.CurrentState === nextState) {
+        const nextState = this.context.CurrentState?.pushChar('\0', this.context, replayCharacter, true) ?? null;
+        if (nextState === null || this.context.CurrentState === nextState) {
           break;
         }
         this.context.CurrentState = nextState;
@@ -72,9 +72,9 @@ export class XmlTreeParser {
     do {
       for (let loopLimit = 0; loopLimit < XmlTreeParser.REPLAY_LIMIT_PER_CHARACTER; loopLimit++) {
         const replayCharacter = Ref.wrap(false);
-        const nextState = this.context.CurrentState.pushChar(c, this.context, replayCharacter, false);
+        const nextState = this.context.CurrentState?.pushChar(c, this.context, replayCharacter, false) ?? null;
 
-        if (nextState === this.context.CurrentState) {
+        if (nextState === null || nextState === this.context.CurrentState) {
           this.context.pulseParsingState();
           done = true;
           break;

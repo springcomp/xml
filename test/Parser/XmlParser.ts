@@ -50,7 +50,7 @@ export class XmlParser extends XmlTreeParser {
   }
   public assertStateIs(stateName: string) {
     const currentState = this.getContext().CurrentState;
-    expect(currentState.Name).toBe(stateName);
+    expect(currentState?.Name).toBe(stateName);
   }
 }
 export class XmlAssertions {
