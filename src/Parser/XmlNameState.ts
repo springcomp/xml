@@ -47,7 +47,6 @@ export class XmlNameState extends XmlParserState {
           named.Name = new XName(name.substring(colonIndex + 1), name.substring(0, colonIndex));
         }
       }
-      console.log(`XmlNameState: naming thing: ${named.Name.Name}`);
       return this.Parent;
     }
 

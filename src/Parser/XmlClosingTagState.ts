@@ -38,18 +38,9 @@ export class XmlClosingTagState extends XmlParserState {
         // Walk up the stack to find matching element
         let popCount = 0;
         let found = false;
-        console.log(context.Nodes);
         for (const node of context.Nodes) {
           popCount++;
-          console.log(isINamedXObject(node) ? node.Name.Name : 'not an INamedXObject');
-          console.log(isINamedXObject(node) ? `${node.Name.Name} === ${ct.Name.Name}` : 'not an INamedXObject');
-          console.log(
-            isINamedXObject(node)
-              ? `${node.Name.Name} equals ${ct.Name.Name} : ${node.Name.equals(ct.Name)}`
-              : 'not an INamedXObject',
-          );
           if (isINamedXObject(node) && node.Name && node.Name.equals(ct.Name)) {
-            console.log(`XmlClosingTagState: found matching starting element : popCount = ${popCount}`);
             found = true;
             break;
           }
@@ -73,7 +64,6 @@ export class XmlClosingTagState extends XmlParserState {
             element.close(ct);
           }
         } else {
-          console.log(`XmlClosingTagState: NOT FOUND matching starting element : popCount = ${popCount}`);
           context.addDiagnostic(XmlCoreDiagnostics.UnmatchedClosingTag, ct.Span, ct.Name.Name);
           // add non matching closing tag into the tree anyway so it's accessible
           let parent: XContainer | null = null;
@@ -87,7 +77,6 @@ export class XmlClosingTagState extends XmlParserState {
                 parent = container;
               }
             }
-            console.log('adding non matching tag to the stack');
             parent?.addChildNode(ct);
           }
         }

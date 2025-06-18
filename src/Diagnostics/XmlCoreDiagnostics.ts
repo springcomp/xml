@@ -84,6 +84,19 @@ export class XmlCoreDiagnostics {
     'The closing tag ended without a name',
   );
 
+  public static IncompleteEndComment = new XmlDiagnosticDescriptor(
+    'IncompleteEndComment',
+    'Incomplete end comment',
+    XmlDiagnosticSeverity.Error,
+    "The string '--' must not appear in comments except when ending the comment with '-->'.",
+  );
+  public static IncompleteCommentEof = new XmlDiagnosticDescriptor(
+    'IncompleteCommentEof',
+    'Incomplete comment',
+    XmlDiagnosticSeverity.Error,
+    'Incomplete comment due to unexpected end of file',
+  );
+
   public static IncompleteTagEof = new XmlDiagnosticDescriptor(
     'IncompleteTagEof',
     'Incomplete tag',

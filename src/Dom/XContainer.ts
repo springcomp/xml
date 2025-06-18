@@ -1,3 +1,4 @@
+import { TypeCastException } from '../Utils/TypeCastException.js';
 import { XNode } from './XNode.js';
 
 export abstract class XContainer extends XNode {
@@ -30,4 +31,12 @@ export abstract class XContainer extends XNode {
 // biome-ignore lint: lint/suspicious/noExplicitAny
 export function isXContainer(obj: any): obj is XContainer {
   return obj && typeof obj === 'object' && 'addChildNode' in obj && 'firstChild' in obj && 'lastChild' in obj;
+}
+// biome-ignore lint: lint/suspicious/noExplicitAny
+export function ensureXContainer(obj: any): obj is XContainer {
+  const o = isXContainer(obj);
+  if (o) {
+    return o;
+  }
+  throw new TypeCastException('Expected type XContainer', 'XContainer');
 }

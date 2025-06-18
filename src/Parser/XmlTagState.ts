@@ -50,7 +50,6 @@ export class XmlTagState extends XmlParserState {
     if (isEndOfFile) {
       context.addDiagnostic(XmlCoreDiagnostics.IncompleteTagEof);
       context.Nodes.pop();
-      console.log(`EndAllNodes::XmlTagState::EOF ${context.Nodes.count()} nodes in the stack`);
       replayCharacter.Value = true;
       return this.Parent;
     }

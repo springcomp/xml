@@ -27,4 +27,9 @@ describe('XmlParser', () => {
     expect(document?.FirstChild?.as(XElement).Name.Name).toBe('a');
     expect(document?.FirstChild?.as(XElement)?.FirstChild?.as(XElement).Name.Name).toBe('b');
   });
+  it.each(['<!-- comment --><r />', '<a><!-- comment --></a>'])('should parse document with comments', xml => {
+    const parser = new XmlParser(createRootState());
+    const [_, __] = parser.parseXml(xml);
+    parser.assertDiagnosticCount(0);
+  });
 });
