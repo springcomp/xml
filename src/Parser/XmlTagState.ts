@@ -3,6 +3,7 @@ import { XmlDiagnostic } from '../Diagnostics/XmlDiagnostic.js';
 import { XContainer } from '../Dom/XContainer.js';
 import { XElement } from '../Dom/XElement.js';
 import { Ref } from '../Utils/Ref.js';
+import { InvalidParserStateException } from './ParserStateExceptions.js';
 import { XmlChar } from './XmlChar.js';
 import { XmlNameState } from './XmlNameState.js';
 import { XmlParserContext } from './XmlParserContext.js';
@@ -26,18 +27,32 @@ export class XmlTagState extends XmlParserState {
     c: string,
     context: XmlParserContext,
     replayCharacter: Ref<boolean>,
-    _isEndOfFile: boolean,
+    isEndOfFile: boolean,
   ): XmlParserState {
     const peekedNode = context.Nodes.peek() as XContainer;
     let element = peekedNode.as(XElement);
 
     // if the current node on the stack is ended or not an element
     // then it’s the parent and we need to create a new element
-    if (element === null || element.IsEnded) {
+    if (isEndOfFile) {
+      if (element === null) {
+        throw new InvalidParserStateException(
+          'When entering tag state during EOF, there MUST be an XElement on the stack',
+        );
+      }
+    } else if (element === null || element.IsEnded) {
       const parent = peekedNode;
       element = new XElement(context.Position - XmlTagState.STARTOFFSET);
       context.Nodes.push(element);
       parent.addChildNode(element);
+    }
+
+    if (isEndOfFile) {
+      context.addDiagnostic(XmlCoreDiagnostics.IncompleteTagEof);
+      context.Nodes.pop();
+      console.log(`EndAllNodes::XmlTagState::EOF ${context.Nodes.count()} nodes in the stack`);
+      replayCharacter.Value = true;
+      return this.Parent;
     }
 
     if (c == '>') {

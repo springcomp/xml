@@ -15,9 +15,9 @@ describe('Ref', () => {
 
   it('should allow direct access to the value property', () => {
     const ref = Ref.wrap(true);
-    expect(ref.value).toBe(true);
-    ref.value = false;
-    expect(ref.value).toBe(false);
+    expect(ref.Value).toBe(true);
+    ref.Value = false;
+    expect(ref.Value).toBe(false);
   });
 
   it('should support wrapping objects', () => {

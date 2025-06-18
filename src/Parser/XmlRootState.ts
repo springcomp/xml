@@ -1,4 +1,5 @@
 import { XDocument } from '../Dom/XDocument.js';
+import { XElement } from '../Dom/XElement.js';
 import { Ref } from '../Utils/Ref.js';
 import { XmlChar } from './XmlChar.js';
 import { XmlClosingTagState } from './XmlClosingTagState.js';
@@ -30,8 +31,14 @@ export class XmlRootState extends XmlParserState {
     c: string,
     context: XmlParserContext,
     replayCharacter: Ref<boolean>,
-    _isEndOfFile: boolean,
+    isEndOfFile: boolean,
   ): XmlParserState {
+    if (isEndOfFile) {
+      const node = context.Nodes.peek();
+      if (node.is(XElement)) {
+        return this.tagState;
+      }
+    }
     if (c == '<') {
       if (context.StateTag !== XmlRootState.FREE) {
         // TODO: Exception

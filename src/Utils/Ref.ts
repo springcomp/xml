@@ -3,7 +3,7 @@
  *
  */
 export class Ref<T> {
-  public value: T;
+  private value: T;
   private constructor(t: T) {
     this.value = t;
   }

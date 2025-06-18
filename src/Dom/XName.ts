@@ -7,7 +7,7 @@ export class XName {
     this.name = name;
   }
   public equals(other: XName): boolean {
-    return this.name === this.name && this.prefix === other.Prefix;
+    return this.name === other.name && this.prefix === other.Prefix;
   }
   public get HasPrefix(): boolean {
     return this.prefix !== null;

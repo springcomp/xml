@@ -17,4 +17,12 @@ describe('XmlClosingState', () => {
     parser.parseXml('<root></ root>');
     parser.assertDiagnostics([XmlCoreDiagnostics.MalformedTagClosing, 8, 0]);
   });
+  it('should report unmatched closing tag error', () => {
+    const parser = new XmlParser(createRootState());
+    parser.parseXml('<root></route>');
+    parser.assertDiagnostics(
+      [XmlCoreDiagnostics.UnmatchedClosingTag, 6, 8],
+      [XmlCoreDiagnostics.IncompleteTagEof, 15, 0],
+    );
+  });
 });

@@ -83,4 +83,11 @@ export class XmlCoreDiagnostics {
     XmlDiagnosticSeverity.Error,
     'The closing tag ended without a name',
   );
+
+  public static IncompleteTagEof = new XmlDiagnosticDescriptor(
+    'IncompleteTagEof',
+    'Incomplete tag',
+    XmlDiagnosticSeverity.Error,
+    'Incomplete tag due to unexpected end of file',
+  );
 }

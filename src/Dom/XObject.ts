@@ -1,4 +1,4 @@
-import { asType } from '../Utils/TypeHelpers.js';
+import { asType, isType } from '../Utils/TypeHelpers.js';
 import { TextSpan } from './TextSpan.js';
 
 export abstract class XObject {
@@ -20,6 +20,10 @@ export abstract class XObject {
   // biome-ignore lint: lint/suspicious/noExplicitAny
   as<T>(ctor: new (...args: any[]) => T): T | null {
     return asType<T>(this, ctor);
+  }
+  // biome-ignore lint: lint/suspicious/noExplicitAny
+  is<T>(ctor: new (...args: any[]) => T): boolean {
+    return isType<T>(this, ctor);
   }
   end(offset: number): void {
     this.textSpan = TextSpan.fromBounds(this.Span.Start, offset);
