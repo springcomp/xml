@@ -1,4 +1,5 @@
-import { asType, isType } from '../Utils/TypeHelpers.js';
+import { isType, tryAsType, TryAsTypeResult } from '../Utils/TypeHelpers.js';
+import { TypeCastException } from '../Utils/TypeCastException.js';
 import { TextSpan } from './TextSpan.js';
 
 export abstract class XObject {
@@ -18,12 +19,20 @@ export abstract class XObject {
    * @returns
    */
   // biome-ignore lint: lint/suspicious/noExplicitAny
-  as<T>(ctor: new (...args: any[]) => T): T | null {
-    return asType<T>(this, ctor);
+  as<T>(ctor: new (...args: any[]) => T): T {
+    const [succeeded, obj] = tryAsType<T>(this, ctor);
+    if (!succeeded) {
+      throw new TypeCastException(`Expected object of type ${ctor.name}`, ctor.name);
+    }
+    return obj;
   }
   // biome-ignore lint: lint/suspicious/noExplicitAny
   is<T>(ctor: new (...args: any[]) => T): boolean {
     return isType<T>(this, ctor);
+  }
+  // biome-ignore lint: lint/suspicious/noExplicitAny
+  tryAs<T>(ctor: new (...args: any[]) => T): TryAsTypeResult<T> {
+    return tryAsType(this, ctor);
   }
   end(offset: number): void {
     this.textSpan = TextSpan.fromBounds(this.Span.Start, offset);

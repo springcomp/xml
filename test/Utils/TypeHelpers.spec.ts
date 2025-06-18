@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { isType } from '../../src/Utils/TypeHelpers';
+import { isType, tryAsType } from '../../src/Utils/TypeHelpers';
+describe('tryAsType', () => {
+  it('should cast an instance of a given type', () => {
+    const d = new C(1, 'text');
+    expect(tryAsType(d, C)[0]).toBe(true);
+    expect(tryAsType(d, D)[0]).toBe(false);
+  });
+});
 describe('isType', () => {
   it('should determine whether an instance is of a given type', () => {
     const a = new A(1, 'text');

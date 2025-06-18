@@ -1,7 +1,6 @@
 import { XElement } from '../Dom/XElement.js';
 import { XText } from '../Dom/XText.js';
 import { Ref } from '../Utils/Ref.js';
-import { ParserStateException } from './ParserStateExceptions.js';
 import { XmlChar } from './XmlChar.js';
 import { XmlParserContext } from './XmlParserContext.js';
 import { XmlParserState } from './XmlParserState.js';
@@ -25,16 +24,10 @@ export class XmlTextState extends XmlParserState {
       replayCharacter.Value = true;
       // trim the text down to the last non-whitespace character
       const node = context.Nodes.pop().as(XText);
-      if (node === null) {
-        throw new ParserStateException('There should be an XText node on the stack');
-      }
       const length = context.StateTag - node?.Span.Start + 1;
       context.KeywordBuilder.byteLength = length;
       const text = new XText(node.Span.Start, context.KeywordBuilder.toString());
       const element = context.Nodes.peek().as(XElement);
-      if (element === null) {
-        throw new ParserStateException('There should be an XElement node on the stack');
-      }
       element.addChildNode(text);
       return this.Parent;
     }

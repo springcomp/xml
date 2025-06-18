@@ -23,9 +23,9 @@ export class XmlClosingTagState extends XmlParserState {
     replayCharacter: Ref<boolean>,
     isEndOfFile: boolean,
   ): XmlParserState {
-    let ct = context.Nodes.peek().as(XClosingTag);
-    if (ct === null) {
-      ct = new XClosingTag(context.Position - XmlClosingTagState.STARTOFFSET);
+    let [succeeded, ct] = context.Nodes.peek().tryAs(XClosingTag);
+    ct ??= new XClosingTag(context.Position - XmlClosingTagState.STARTOFFSET);
+    if (!succeeded) {
       context.Nodes.push(ct);
     }
 
@@ -68,7 +68,10 @@ export class XmlClosingTagState extends XmlParserState {
 
         // close the start tag if found
         if (popCount > 0) {
-          context.Nodes.pop().as(XElement)?.close(ct);
+          const [succeeded, element] = context.Nodes.pop().tryAs(XElement);
+          if (succeeded) {
+            element.close(ct);
+          }
         } else {
           console.log(`XmlClosingTagState: NOT FOUND matching starting element : popCount = ${popCount}`);
           context.addDiagnostic(XmlCoreDiagnostics.UnmatchedClosingTag, ct.Span, ct.Name.Name);

@@ -14,8 +14,8 @@ export class XElement extends XContainer implements INamedXObject {
   }
   close(node: XNode): void {
     this.closingTag = node;
-    const closingTag = node.as(XClosingTag);
-    if (closingTag != null) {
+    const [succeeded, closingTag] = node.tryAs(XClosingTag);
+    if (succeeded) {
       closingTag.Parent = this.Parent;
     }
   }

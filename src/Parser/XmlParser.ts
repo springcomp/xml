@@ -1,6 +1,7 @@
 import { XmlDiagnostic } from '../Diagnostics/XmlDiagnostic.js';
 import { XDocument } from '../Dom/XDocument.js';
 import { Ref } from '../Utils/Ref.js';
+import { TypeCastException } from '../Utils/TypeCastException.js';
 import { InvalidParserStateException } from './ParserStateExceptions.js';
 import { XmlParserContext } from './XmlParserContext.js';
 import { XmlRootState } from './XmlRootState.js';
@@ -32,17 +33,24 @@ export class XmlTreeParser {
 
     console.log(`END ALL NODES ${nodes.count()} nodes in the stack`);
 
-    let loopMax = nodes.count() * XmlTreeParser.REPLAY_LIMIT_PER_CHARACTER;
-    while (nodes.count() > 1 && loopMax-- > 0) {
-      const replayCharacter = Ref.wrap(false);
-      const nextState = this.context.CurrentState.pushChar('\0', this.context, replayCharacter, true);
-      if (this.context.CurrentState === nextState) {
-        break;
+    try {
+      let loopMax = nodes.count() * XmlTreeParser.REPLAY_LIMIT_PER_CHARACTER;
+      while (nodes.count() > 1 && loopMax-- > 0) {
+        const replayCharacter = Ref.wrap(false);
+        const nextState = this.context.CurrentState.pushChar('\0', this.context, replayCharacter, true);
+        if (this.context.CurrentState === nextState) {
+          break;
+        }
+        this.context.CurrentState = nextState;
       }
-      this.context.CurrentState = nextState;
+    } catch (exception: unknown) {
+      if (exception instanceof TypeCastException) {
+        throw new InvalidParserStateException(exception.message);
+      }
+      throw exception;
     }
 
-    if (nodes.count() != 1 || nodes.peek().as(XDocument) === null) {
+    if (nodes.count() != 1 || !nodes.peek().is(XDocument)) {
       throw new InvalidParserStateException('Malformed state stack when ending all nodes');
     }
 

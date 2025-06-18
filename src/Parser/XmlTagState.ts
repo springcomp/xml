@@ -30,7 +30,7 @@ export class XmlTagState extends XmlParserState {
     isEndOfFile: boolean,
   ): XmlParserState {
     const peekedNode = context.Nodes.peek() as XContainer;
-    let element = peekedNode.as(XElement);
+    let [_, element] = peekedNode.tryAs(XElement);
 
     // if the current node on the stack is ended or not an element
     // then it’s the parent and we need to create a new element

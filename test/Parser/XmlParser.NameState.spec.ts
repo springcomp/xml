@@ -14,9 +14,8 @@ describe('XmlNameState', () => {
     parser.parseXml('<root /$>', p => {
       p.assertStateIs(XmlTagState.StateName);
       const object = p.assertPeek(1).as(XElement);
-      expect(object).not.toBeNull();
-      expect(object?.Name.HasPrefix).toBeFalsy();
-      expect(object?.Name.Name).toBe('root');
+      expect(object.Name.HasPrefix).toBeFalsy();
+      expect(object.Name.Name).toBe('root');
     });
   });
   it('should parse prefixed name', () => {
@@ -24,9 +23,8 @@ describe('XmlNameState', () => {
     parser.parseXml('<ns:root /$>', p => {
       p.assertStateIs(XmlTagState.StateName);
       const object = p.assertPeek(1).as(XElement);
-      expect(object).not.toBeNull();
-      expect(object?.Name.Prefix).toBe('ns');
-      expect(object?.Name.Name).toBe('root');
+      expect(object.Name.Prefix).toBe('ns');
+      expect(object.Name.Name).toBe('root');
     });
   });
   it('should report error for empty prefix', () => {
