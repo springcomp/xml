@@ -1,6 +1,8 @@
+import { XComment } from '../Dom/XComment.js';
 import { XDocument } from '../Dom/XDocument.js';
 import { XElement } from '../Dom/XElement.js';
 import { Ref } from '../Utils/Ref.js';
+import { InvalidParserStateException } from './ParserStateExceptions.js';
 import { XmlChar } from './XmlChar.js';
 import { XmlClosingTagState } from './XmlClosingTagState.js';
 import { XmlCommentState } from './XmlCommentState.js';
@@ -45,9 +47,16 @@ export class XmlRootState extends XmlParserState {
   ): XmlParserState {
     if (isEndOfFile) {
       const node = context.Nodes.peek();
+      if (node.is(XComment)) {
+        return this.commentState;
+      }
       if (node.is(XElement)) {
         return this.tagState;
       }
+      if (node.is(XDocument)) {
+        return this.Parent;
+      }
+      throw new InvalidParserStateException(`RootState could not find state for sending EOF to ${node}`);
     }
     if (c === '<') {
       if (context.StateTag !== XmlRootState.FREE) {

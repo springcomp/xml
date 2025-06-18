@@ -29,11 +29,11 @@ export abstract class XmlParserState {
     replayCharacter: Ref<boolean>,
     isEndOfFile: boolean,
   ): XmlParserState {
-    //console.log(`${this.name}.pushChar: ${c} at position ${context.Position}; StateTag: ${context.StateTag}`);
+    console.log(`${this.name}.pushChar: ${c} at position ${context.Position}; StateTag: ${context.StateTag}`);
     const nextState = this.onChar(c, context, replayCharacter, isEndOfFile);
-    //if (nextState !== context.CurrentState) {
-    //  console.log('STATE CHANGED');
-    //}
+    if (nextState !== context.CurrentState) {
+      console.log('STATE CHANGED');
+    }
     return nextState;
   }
   protected abstract onChar(

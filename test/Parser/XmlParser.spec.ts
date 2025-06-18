@@ -29,7 +29,8 @@ describe('XmlParser', () => {
   });
   it.each(['<!-- comment --><r />', '<a><!-- comment --></a>'])('should parse document with comments', xml => {
     const parser = new XmlParser(createRootState());
-    const [_, __] = parser.parseXml(xml);
+    parser.parseXml(xml);
     parser.assertDiagnosticCount(0);
+    // TODO: find comment by looking into nodes
   });
 });
