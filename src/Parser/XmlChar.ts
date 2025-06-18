@@ -30,7 +30,7 @@ export class XmlChar {
     // colons in names.
     // https://www.w3.org/TR/xml/#NT-NameStartChar
 
-    if (ch == XmlChar.colon) {
+    if (ch === XmlChar.colon) {
       return false;
     }
 
@@ -54,7 +54,7 @@ export class XmlChar {
     // colons in names.
     // https://www.w3.org/TR/xml/#NT-NameChar
 
-    if (ch == XmlChar.colon) {
+    if (ch === XmlChar.colon) {
       return false;
     }
     return XmlChar.IsValidLookupChar(ch, XmlCharTables.NameCharPages, XmlCharTables.NameCharBitmap);

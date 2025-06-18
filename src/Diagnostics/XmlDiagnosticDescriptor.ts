@@ -21,7 +21,7 @@ export class XmlDiagnosticDescriptor {
     return this.title;
   }
   equals(other: XmlDiagnosticDescriptor): boolean {
-    return this.Id == other.Id;
+    return this.Id === other.Id;
   }
   getFormattedMessage(args?: unknown[]): string {
     const format = `${this.title}\n${this.message}`;

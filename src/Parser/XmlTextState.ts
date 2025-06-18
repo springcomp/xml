@@ -21,7 +21,7 @@ export class XmlTextState extends XmlParserState {
     if (context.enteringParsingState()) {
       context.Nodes.push(new XText(context.Position));
     }
-    if (c == '<' || isEndOfFile) {
+    if (c === '<' || isEndOfFile) {
       replayCharacter.Value = true;
       // trim the text down to the last non-whitespace character
       const node = context.Nodes.pop().as(XText);

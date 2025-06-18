@@ -8,7 +8,7 @@ export abstract class XContainer extends XNode {
     if (this.lastChild != null) {
       this.lastChild.NextSibling = newChild;
     }
-    if (this.firstChild == null) {
+    if (this.firstChild === null) {
       this.firstChild = newChild;
     }
     this.lastChild = newChild;

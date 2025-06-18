@@ -39,7 +39,7 @@ export class XmlRootState extends XmlParserState {
         return this.tagState;
       }
     }
-    if (c == '<') {
+    if (c === '<') {
       if (context.StateTag !== XmlRootState.FREE) {
         // TODO: Exception
       }

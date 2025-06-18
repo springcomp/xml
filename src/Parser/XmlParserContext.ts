@@ -70,7 +70,7 @@ export class XmlParserContext {
    * @returns true if this is the first time entering the state.
    */
   public enteringParsingState(): boolean {
-    return this.currentStateLength == 0;
+    return this.currentStateLength === 0;
   }
   public pulseParsingState(): void {
     this.currentStateLength++;

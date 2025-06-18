@@ -51,7 +51,7 @@ export class XmlNameState extends XmlParserState {
       return this.Parent;
     }
 
-    if (c == ':') {
+    if (c === ':') {
       const name = context.KeywordBuilder.toString();
       const colonIndex = name.indexOf(':');
       if (colonIndex != -1) {

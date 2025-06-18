@@ -108,7 +108,7 @@ export class XmlClosingTagState extends XmlParserState {
       return this.nameState;
     }
 
-    if (!ct.IsNamed && ct.Span.Start + XmlClosingTagState.STARTOFFSET == context.Position) {
+    if (!ct.IsNamed && ct.Span.Start + XmlClosingTagState.STARTOFFSET === context.Position) {
       context.addDiagnostic(XmlCoreDiagnostics.MalformedTagClosing, context.Position, c);
     }
 

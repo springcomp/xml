@@ -24,7 +24,7 @@ export class TextSpan {
     return `[${this.start}, ${this.End}]`;
   }
   public equals(other: TextSpan): boolean {
-    return this.start === other.start && this.length == other.length;
+    return this.start === other.start && this.length === other.length;
   }
   public toString(): string {
     return this.asRange();

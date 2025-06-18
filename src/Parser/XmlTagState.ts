@@ -55,7 +55,7 @@ export class XmlTagState extends XmlParserState {
       return this.Parent;
     }
 
-    if (c == '>') {
+    if (c === '>') {
       element.HasEndBracket = true;
       element.end(context.Position);
 
@@ -63,30 +63,30 @@ export class XmlTagState extends XmlParserState {
         context.Diagnostics.push(new XmlDiagnostic(XmlCoreDiagnostics.UnnamedTag, element.Span));
       }
 
-      if (context.StateTag == XmlTagState.MAYBE_SELF_CLOSING) {
+      if (context.StateTag === XmlTagState.MAYBE_SELF_CLOSING) {
         element.close(element);
         context.Nodes.pop();
       }
       return this.Parent;
     }
 
-    if (c == '/') {
+    if (c === '/') {
       context.StateTag = XmlTagState.MAYBE_SELF_CLOSING;
       return this;
     }
 
-    if (context.StateTag == XmlTagState.MAYBE_SELF_CLOSING) {
+    if (context.StateTag === XmlTagState.MAYBE_SELF_CLOSING) {
       context.addDiagnostic(XmlCoreDiagnostics.MalformedSelfClosingTag, context.Position, c);
       return this;
     }
 
-    if (context.StateTag == XmlTagState.ATTEMPT_RECOVERY) {
+    if (context.StateTag === XmlTagState.ATTEMPT_RECOVERY) {
       if (XmlChar.IsWhitespace(c)) {
         context.StateTag = XmlTagState.RECOVERY_FOUND_WHITESPACE;
       }
       return this;
     }
-    if (context.StateTag == XmlTagState.RECOVERY_FOUND_WHITESPACE) {
+    if (context.StateTag === XmlTagState.RECOVERY_FOUND_WHITESPACE) {
       if (XmlChar.IsNameStartChar(c)) {
         return this;
       }
@@ -94,7 +94,7 @@ export class XmlTagState extends XmlParserState {
 
     context.StateTag = XmlTagState.FREE;
 
-    if (!element.IsNamed && (XmlChar.IsNameStartChar(c) || c == ':')) {
+    if (!element.IsNamed && (XmlChar.IsNameStartChar(c) || c === ':')) {
       replayCharacter.Value = true;
       return this.nameState;
     }
