@@ -19,6 +19,9 @@ export class XmlParserContext {
   public get CurrentState(): XmlParserState | null {
     return this.currentState;
   }
+  public get CurrentStateLength(): number {
+    return this.currentStateLength;
+  }
   public get Diagnostics(): XmlDiagnostic[] {
     return this.diagnostics;
   }
@@ -75,7 +78,7 @@ export class XmlParserContext {
   public pulseParsingState(): void {
     this.currentStateLength++;
   }
-  public resetParsingState(): void {
-    this.currentStateLength = 0;
+  public resetParsingState(value?: number): void {
+    this.currentStateLength = value ?? 0;
   }
 }

@@ -1,6 +1,6 @@
-import { Ref, Stack } from '@springcomp/xml-core/Utils';
-import type { XmlParserContext } from '@springcomp/xml-core/Parser';
-import { XmlParserState } from '@springcomp/xml-core/Parser';
+import type { XmlParserContext } from '@springcomp/xml-core/Parser/index.js';
+import { XmlParserState } from '@springcomp/xml-core/Parser/index.js';
+import { Ref, Stack } from '@springcomp/xml-core/Utils/index.js';
 import { XCSharpExpression } from '../Dom/XCSharpExpression.js';
 import { XmlCoreDiagnostics } from '../Diagnostics/XmlCoreDiagnostics.js';
 
@@ -17,7 +17,7 @@ export class XmlCSharpExpressionState extends XmlParserState {
   protected onChar(
     c: string,
     context: XmlParserContext,
-    _replayCharacter: Ref<boolean>,
+    replayCharacter: Ref<boolean>,
     isEndOfFile: boolean,
   ): XmlParserState | null {
     if (context.enteringParsingState()) {
@@ -37,6 +37,7 @@ export class XmlCSharpExpressionState extends XmlParserState {
           context.StateTag = CSharpCodeState.MATCH_QUOTE;
         }
         if (c === '(') {
+          console.log('XmlCSharpExpressionState::ON LPAREN');
           this.states.push(context.StateTag);
           this.unmatchedParens.push(context.Position);
           context.StateTag = CSharpCodeState.MATCH_PARENS;
@@ -51,6 +52,8 @@ export class XmlCSharpExpressionState extends XmlParserState {
             this.unmatchedParens.pop();
             context.StateTag = this.states.pop();
           } else {
+            console.log('XmlCSharpExpressionState::end()');
+            replayCharacter.Value = true;
             return this.end(context);
           }
         }
@@ -59,20 +62,21 @@ export class XmlCSharpExpressionState extends XmlParserState {
             this.unmatchedBraces.pop();
             context.StateTag = this.states.pop();
           } else {
+            replayCharacter.Value = true;
             return this.end(context);
           }
         }
         break;
       case CSharpCodeState.MATCH_QUOTE:
         if (c === '\\') {
-          this.states.push(CSharpCodeState.ESCPAPE);
+          this.states.push(CSharpCodeState.ESCAPE);
         }
         if (c === '"') {
           this.unmatchedQuotes.pop();
           context.StateTag = this.states.pop();
         }
         break;
-      case CSharpCodeState.ESCPAPE:
+      case CSharpCodeState.ESCAPE:
         if (XmlCSharpExpressionState.ESCAPED_CHARS.includes(c)) {
           // TODO: error
           // TODO: \uXXXX unicode
@@ -105,5 +109,5 @@ enum CSharpCodeState {
   MATCH_QUOTE = 1,
   MATCH_PARENS = 2,
   MATCH_BRACES = 3,
-  ESCPAPE = 4,
+  ESCAPE = 4,
 }

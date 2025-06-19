@@ -1,5 +1,6 @@
-import { XmlRootState, XmlTreeParser } from '@springcomp/xml-core/Parser/index.js';
+import { XmlTreeParser } from '@springcomp/xml-core/Parser/index.js';
+import { XmlPolicyRootState } from './Parser/XmlPolicyRootState.js';
 
-const parser = new XmlTreeParser(new XmlRootState());
-const [document, _] = parser.parse('<a>$("w")</a>');
+const parser = new XmlTreeParser(new XmlPolicyRootState());
+const [document, _] = parser.parse('<a>@{return "w";}</a>');
 console.log(document);

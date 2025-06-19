@@ -1,4 +1,4 @@
-import { XmlDiagnosticDescriptor, XmlDiagnosticSeverity } from '@springcomp/xml-core/Diagnostics';
+import { XmlDiagnosticDescriptor, XmlDiagnosticSeverity } from '@springcomp/xml-core/Diagnostics/index.js';
 
 export class XmlCoreDiagnostics {
   public static EmptyCSharpExpression = new XmlDiagnosticDescriptor(

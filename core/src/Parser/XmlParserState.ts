@@ -43,22 +43,3 @@ export abstract class XmlParserState {
     _isEndOfFile: boolean,
   ): XmlParserState | null;
 }
-export class NullParserState extends XmlParserState {
-  /**
-   * Singleton instance of NullParserState.
-   */
-  public static readonly Instance = new NullParserState();
-
-  private constructor() {
-    super('null');
-  }
-
-  protected onChar(
-    _: string,
-    _context: XmlParserContext,
-    _replayCharacter: Ref<boolean>,
-    _isEndOfFile: boolean,
-  ): XmlParserState {
-    throw new Error('Application Error: NullParserState cannot process characters');
-  }
-}
