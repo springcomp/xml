@@ -1,0 +1,31 @@
+{
+	"name": "@springcomp/xml-core",
+	"version": "1.0.0",
+	"description": "An extensible XML parser designed to support language servers and editors.",
+	"license": "ISC",
+	"author": "springcomp",
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": ["dist"],
+	"publishConfig": { "directory": "dist" },
+	"scripts": {
+		"build": "tsc",
+		"lint:fix": "biome lint --write .",
+		"lint": "biome lint .",
+  	"postbuild": "node scripts/copy-dts.js",
+  	"postbuild__": "echo 'export * from \"./types/index.js\";' > dist/index.d.ts",
+		"prebuild": "npx premove dist",
+		"prepare": "pnpm run build",
+		"test:watch": "vitest --watch",
+		"test": "vitest --run --coverage"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@types/node": "^22.15.17",
+		"@vitest/coverage-v8": "^3.2.3",
+		"premove": "^4.0.0",
+		"typescript": "^5",
+		"vitest": "^3.2.3"
+	}
+}
