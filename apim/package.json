@@ -1,0 +1,28 @@
+{
+  "name": "@springcomp/azure-api-management-policies",
+  "version": "1.0.0",
+  "description": "A parser for Azure XML-like policies.",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "lint:fix": "biome lint --write .",
+    "lint": "biome lint .",
+    "prebuild": "npx premove dist",
+    "test:watch": "vitest --watch",
+    "test": "vitest --run --coverage"
+  },
+  "dependencies": {
+    "@springcomp/xml-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^22.15.17",
+    "@vitest/coverage-v8": "^3.2.3",
+    "premove": "^4.0.0",
+    "typescript": "^5",
+    "vitest": "^3.2.3"
+  }
+}

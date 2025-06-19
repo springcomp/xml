@@ -1,0 +1,11 @@
+{
+	"scripts": {
+		"build": "pnpm -r --filter ./core --filter ./apim run build",
+		"build:apim": "pnpm --filter ./apim... run build",
+		"build:core": "pnpm --filter ./core... run build",
+		"ci": "pnpm run build:all && pnpm run test:all",
+		"test": "pnpm -r --filter ./core --filter ./apim run test",
+		"test:apim": "pnpm --filter ./apim... run test",
+		"test:core": "pnpm --filter ./core... run test"
+	}
+}

@@ -1,0 +1,9 @@
+packages:
+  - core
+  - apim
+
+ignoredBuiltDependencies:
+  - esbuild
+
+onlyBuiltDependencies:
+  - '@biomejs/biome'
