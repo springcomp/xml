@@ -7,8 +7,8 @@ import { XmlParserState } from './XmlParserState.js';
 
 export class XmlTextState extends XmlParserState {
   private static readonly StateName = 'XmlTextState';
-  constructor() {
-    super(XmlTextState.StateName);
+  constructor(stateName?: string) {
+    super(stateName ?? XmlTextState.StateName);
   }
   protected onChar(
     c: string,

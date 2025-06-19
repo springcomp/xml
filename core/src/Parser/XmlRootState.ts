@@ -25,12 +25,13 @@ export class XmlRootState extends XmlParserState {
   private closingTagState: XmlClosingTagState;
   private commentState: XmlCommentState;
   constructor(
+    stateName?: string,
     tagState?: XmlTagState,
     closingTagState?: XmlClosingTagState,
     textState?: XmlTextState,
     commentState?: XmlCommentState,
   ) {
-    super(XmlRootState.StateName);
+    super(stateName ?? XmlRootState.StateName);
     this.tagState = this.Adopt(tagState ?? new XmlTagState());
     this.closingTagState = this.Adopt(closingTagState ?? new XmlClosingTagState());
     this.textState = this.Adopt(textState ?? new XmlTextState());
