@@ -24,7 +24,6 @@ export class XmlCSharpExpressionTextState extends XmlTextState {
     isEndOfFile: boolean,
   ): XmlParserState {
     if (context.Nodes.tryPeek()?.is(XText)) {
-      console.log('ON XText');
       return super.onChar(c, context, replayCharacter, isEndOfFile);
     }
     this.popState(context);
@@ -36,6 +35,10 @@ export class XmlCSharpExpressionTextState extends XmlTextState {
       case CSharpTextState.FREE:
         if (c === '@') {
           context.StateTag = CSharpTextState.AT;
+        } else {
+          // not a C# expression
+          context.StateTag = CSharpTextState.TEXT;
+          return super.onChar(c, context, replayCharacter, isEndOfFile);
         }
         break;
       case CSharpTextState.AT:
@@ -50,14 +53,16 @@ export class XmlCSharpExpressionTextState extends XmlTextState {
           this.pushState(context);
           this.multiStatement = true;
           return this.cSharpExpressionState;
-        } else if (XmlChar.IsWhitespace(c)) {
+        }
+        if (XmlChar.IsWhitespace(c)) {
           // ignore white space
           return this;
-        } else {
-          context.StateTag = CSharpTextState.TEXT;
-          super.onChar('@', context, replayCharacter, isEndOfFile);
-          return super.onChar(c, context, replayCharacter, isEndOfFile);
         }
+
+        // not a C# expression
+        context.StateTag = CSharpTextState.TEXT;
+        super.onChar('@', context, replayCharacter, isEndOfFile);
+        return super.onChar(c, context, replayCharacter, isEndOfFile);
 
       case CSharpTextState.LPAREN:
         console.log('ON RPAREN');
