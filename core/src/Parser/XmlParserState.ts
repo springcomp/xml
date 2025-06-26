@@ -4,8 +4,8 @@ import { Ref } from '../Utils/Ref.js';
 export abstract class XmlParserState {
   private name: string;
   private parent: XmlParserState | null = null;
-  protected constructor(name: string) {
-    this.name = name;
+  protected constructor(stateName: string) {
+    this.name = stateName;
   }
   public get Name(): string {
     return this.name;
