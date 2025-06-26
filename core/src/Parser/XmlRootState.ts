@@ -4,6 +4,7 @@ import { XElement } from '../Dom/XElement.js';
 import { Ref } from '../Utils/Ref.js';
 import { InvalidParserStateException } from './ParserStateExceptions.js';
 import { XmlChar } from './XmlChar.js';
+import { XmlAttributeState } from './XmlAttributeState.js';
 import { XmlClosingTagState } from './XmlClosingTagState.js';
 import { XmlCommentState } from './XmlCommentState.js';
 import { XmlParserContext } from './XmlParserContext.js';
