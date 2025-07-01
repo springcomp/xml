@@ -84,11 +84,46 @@ export class XmlCoreDiagnostics {
     'The closing tag ended without a name',
   );
 
+  public static IncompleteAttributeValue = new XmlDiagnosticDescriptor(
+    'IncompleteAttributeValue',
+    'Incomplete attribute value',
+    XmlDiagnosticSeverity.Error,
+    "The value of attribute '{0}' ended unexpectedly due to character '{1}'.",
+  );
+
+  public static UnquotedAttributeValue = new XmlDiagnosticDescriptor(
+    'UnquotedAttributeValue',
+    'Unquoted attribute value',
+    XmlDiagnosticSeverity.Error,
+    "The value of attribute '{0}' is not contained within quote markers.",
+  );
+
+  public static DuplicateAttributeName = new XmlDiagnosticDescriptor(
+    'DuplicateAttributeName',
+    'Duplicate attribute name',
+    XmlDiagnosticSeverity.Error,
+    "Element has more than one attribute named '{0}'.",
+  );
+
+  public static IncompleteAttribute = new XmlDiagnosticDescriptor(
+    'IncompleteAttribute',
+    'Incomplete attribute',
+    XmlDiagnosticSeverity.Error,
+    "Attribute is incomplete due to unexpected character '{0}'.",
+  );
+
   public static IncompleteEndComment = new XmlDiagnosticDescriptor(
     'IncompleteEndComment',
     'Incomplete end comment',
     XmlDiagnosticSeverity.Error,
     "The string '--' must not appear in comments except when ending the comment with '-->'.",
+  );
+
+  public static IncompleteAttributeEof = new XmlDiagnosticDescriptor(
+    'IncompleteAttributeEof',
+    'Incomplete attribute',
+    XmlDiagnosticSeverity.Error,
+    'Incomplete attribute due to unexpected end of file',
   );
   public static IncompleteCommentEof = new XmlDiagnosticDescriptor(
     'IncompleteCommentEof',
@@ -96,7 +131,6 @@ export class XmlCoreDiagnostics {
     XmlDiagnosticSeverity.Error,
     'Incomplete comment due to unexpected end of file',
   );
-
   public static IncompleteTagEof = new XmlDiagnosticDescriptor(
     'IncompleteTagEof',
     'Incomplete tag',

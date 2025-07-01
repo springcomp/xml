@@ -5,11 +5,11 @@ import { XNode } from './XNode.js';
 
 export class XAttribute extends XNode implements INamedXObject {
   private name: XName;
-  private value: string;
-  constructor(span: number | TextSpan, name?: XName, value?: string) {
+  private value: string | null = null;
+  private valueOffset: number | null = null;
+  constructor(span: number | TextSpan, name?: XName) {
     super(span);
     this.name = name ?? XName.Empty;
-    this.value = value ?? '';
   }
   get IsComplete(): boolean {
     return this.IsEnded && this.IsNamed;
@@ -23,10 +23,14 @@ export class XAttribute extends XNode implements INamedXObject {
   set Name(name: XName) {
     this.name = name;
   }
-  get Value(): string {
+  get Value(): string | null {
     return this.value;
   }
-  set Value(value: string) {
+  get ValueOffset(): number | null {
+    return this.valueOffset;
+  }
+  setValue(offset: number, value: string) {
+    this.valueOffset = offset;
     this.value = value;
   }
 }

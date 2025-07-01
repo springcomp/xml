@@ -33,4 +33,10 @@ describe('XmlParser', () => {
     parser.assertDiagnosticCount(0);
     // TODO: find comment by looking into nodes
   });
+  it('should parse simple XML document with attributes', () => {
+    const parser = new XmlParser(createRootState());
+    parser.parseXml('<r a="v" b="w" />');
+    parser.assertDiagnosticCount(0);
+    // TODO: find attributes by looking into nodes
+  });
 });

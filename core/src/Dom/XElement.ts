@@ -1,16 +1,23 @@
+import { IAttributedXObject } from './IAttributedXObject.js';
 import { INamedXObject } from './INamedXObject.js';
+import { XAttributeCollection } from './XAttributeCollection.js';
 import { XClosingTag } from './XClosingTag.js';
 import { XContainer } from './XContainer.js';
 import { XName } from './XName.js';
 import { XNode } from './XNode.js';
 
-export class XElement extends XContainer implements INamedXObject {
+export class XElement extends XContainer implements INamedXObject, IAttributedXObject {
   private closingTag: XNode | null = null;
   private hasEndBracket = false;
   private name: XName;
+  private readonly attributes;
   constructor(position: number, name?: XName) {
     super(position);
     this.name = name ?? XName.Empty;
+    this.attributes = new XAttributeCollection(this);
+  }
+  get Attributes(): XAttributeCollection {
+    return this.attributes;
   }
   close(node: XNode): void {
     this.closingTag = node;

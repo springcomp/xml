@@ -6,8 +6,12 @@ export class XName {
     this.prefix = prefix ?? null;
     this.name = name;
   }
-  public equals(other: XName): boolean {
-    return this.name === other.name && this.prefix === other.Prefix;
+  public equals(other: XName, ignoreCase?: boolean): boolean {
+    if (ignoreCase ?? false) {
+      return this.getQualifiedName().localeCompare(other.getQualifiedName(), 'en-US', { sensitivity: 'base' }) === 0;
+    } else {
+      return this.name === other.name && this.prefix === other.Prefix;
+    }
   }
   public get HasPrefix(): boolean {
     return this.prefix !== null;
@@ -20,5 +24,8 @@ export class XName {
   }
   public get Name(): string {
     return this.name;
+  }
+  public getQualifiedName(): string {
+    return this.prefix !== null ? `${this.prefix}:${this.name}` : this.name;
   }
 }

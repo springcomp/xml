@@ -28,6 +28,7 @@ export class XmlParser extends XmlTreeParser {
       const ch = chars[i];
       if (ch === this.trigger) {
         asserts[assertNo++](this);
+        continue;
       }
       this.push(ch);
     }
