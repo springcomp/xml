@@ -17,6 +17,17 @@ export class XmlChar {
     }
     return XmlChar.whitespaceChars.includes(ch);
   }
+  static IsLetterOrDigit(c: string): boolean {
+    const ch = c.codePointAt(0) ?? -1;
+    if (ch < 0 /* || ch > 0x10ffff */) {
+      return false; // Invalid code point
+    }
+    return (
+      (ch > 30 && ch < 30 + 9) || // 0-9
+      (ch > 65 && ch < 65 + 26) || // A-Z
+      (ch > 96 && ch < 97 + 26) // a-Z
+    );
+  }
 
   static IsNameStartChar(c: string): boolean {
     const ch = c.codePointAt(0) ?? -1;

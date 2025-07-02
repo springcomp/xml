@@ -1,7 +1,9 @@
 import { XmlCoreDiagnostics } from '../Diagnostics/XmlCoreDiagnostics.js';
+import { TextSpan } from '../Dom/TextSpan.js';
 import { XAttribute } from '../Dom/XAttribute.js';
 import { Ref } from '../Utils/index.js';
 import { InvalidParserStateException } from './ParserStateExceptions.js';
+import { XmlChar } from './XmlChar.js';
 import { XmlParserContext } from './XmlParserContext.js';
 import { XmlParserState } from './XmlParserState.js';
 
@@ -9,7 +11,7 @@ export class XmlAttributeValueState extends XmlParserState {
   private static readonly StateName = 'XmlAttributeValueState';
   // state
   //private static FREE = 0 as const;
-  //private static UNQUOTED = 1 as const;
+  private static UNQUOTED = 1 as const;
   //private static SINGLEQUOTE = 2 as const;
   private static DOUBLEQUOTE = 3 as const;
 
@@ -25,7 +27,7 @@ export class XmlAttributeValueState extends XmlParserState {
     context: XmlParserContext,
     replayCharacter: Ref<boolean>,
     isEndOfFile: boolean,
-  ): XmlParserState {
+  ): XmlParserState | null {
     const attr = context.Nodes.peek().as(XAttribute);
     if (attr === null) {
       throw new InvalidParserStateException('When parsing attribute value, an XAttribute must be on the stack.');
@@ -53,10 +55,14 @@ export class XmlAttributeValueState extends XmlParserState {
       //	context.StateTag = XmlAttributeValueState.SINGLEQUOTE;
       //	return null;
       //}
-      //context.StateTag = XmlAttributeValueState.UNQUOTED;
+      context.StateTag = XmlAttributeValueState.UNQUOTED;
     }
 
     const maskedTag = context.StateTag & XmlAttributeValueState.TagMask;
+
+    if (maskedTag === XmlAttributeValueState.UNQUOTED) {
+      return this.buildUnquotedValue(c, context, replayCharacter);
+    }
 
     if (c == '"' && maskedTag == XmlAttributeValueState.DOUBLEQUOTE) {
       //ending the value
@@ -69,7 +75,79 @@ export class XmlAttributeValueState extends XmlParserState {
     context.KeywordBuilder.append(c);
     return this;
   }
+  private static isUnquotedValueChar(c: string): boolean {
+    return XmlChar.IsLetterOrDigit(c) || c == '_' || c == '.' || c == '-';
+  }
+  private buildUnquotedValue(
+    c: string,
+    context: XmlParserContext,
+    replayCharacter: Ref<boolean>,
+  ): XmlParserState | null {
+    // even though unquoted values aren't legal, attempt to build a value anyway
+    if (XmlAttributeValueState.isUnquotedValueChar(c)) {
+      context.KeywordBuilder.append(c);
+      return null;
+    }
+    // if first char is not something we can handle as an unquoted char, just reject it for parent to deal with
+    if (context.KeywordBuilder.byteLength === 0) {
+      if (context.Nodes.peek().is(XAttribute)) {
+        const badAttr = context.Nodes.peek().as(XAttribute);
+        if (badAttr.Name.IsValid) {
+          context.addDiagnostic(
+            XmlCoreDiagnostics.IncompleteAttributeValue,
+            context.Position,
+            badAttr.Name.FullName,
+            c,
+          );
+        }
+      }
+      replayCharacter.Value = true;
+      return this.Parent;
+    }
+
+    const attr = context.Nodes.peek().as(XAttribute);
+    attr.setValue(context.Position - context.CurrentStateLength, context.KeywordBuilder.toString());
+
+    if (attr.Name.IsValid) {
+      const length = attr.Value?.length ?? 0;
+      context.addDiagnostic(
+        XmlCoreDiagnostics.UnquotedAttributeValue,
+        new TextSpan(context.Position - length, length),
+        attr.Name.FullName,
+      );
+    }
+
+    replayCharacter.Value = true;
+    return this.Parent;
+  }
 }
+//
+// 		XmlParserState? BuildUnquotedValue (char c, XmlParserContext context, ref bool replayCharacter)
+// 		{
+// 			// even though unquoted values aren't legal, attempt to build a value anyway
+// 			if (IsUnquotedValueChar (c)) {
+// 				context.KeywordBuilder.Append (c);
+// 				return null;
+// 			}
+//
+// 			// if first char is not something we can handle as an unquoted char, just reject it for parent to deal with
+// 			if (context.KeywordBuilder.Length == 0) {
+// 				if (context.Diagnostics is not null && context.Nodes.Peek () is XAttribute badAtt && badAtt.Name.IsValid) {
+// 					context.Diagnostics.Add (XmlCoreDiagnostics.IncompleteAttributeValue, context.Position, badAtt.Name!.FullName, c);
+// 				} // 				replayCharacter = true;
+// 				return Parent;
+// 			}
+//
+// 			var att = (XAttribute)context.Nodes.Peek ();
+// 			att.SetValue (context.Position - context.CurrentStateLength, context.KeywordBuilder.ToString ());
+//
+// 			if (context.Diagnostics is not null && att.Name.IsValid) {
+// 				context.Diagnostics.Add (XmlCoreDiagnostics.UnquotedAttributeValue, new TextSpan (context.Position - att.Value.Length, att.Value.Length), att.Name.FullName);
+// 			}
+//
+// 			replayCharacter = true;
+// 			return Parent;
+// 		}
 
 // included in all copies or substantial portions of the Software.
 //

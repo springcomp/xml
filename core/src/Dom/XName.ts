@@ -8,7 +8,7 @@ export class XName {
   }
   public equals(other: XName, ignoreCase?: boolean): boolean {
     if (ignoreCase ?? false) {
-      return this.getQualifiedName().localeCompare(other.getQualifiedName(), 'en-US', { sensitivity: 'base' }) === 0;
+      return this.FullName.localeCompare(other.FullName, 'en-US', { sensitivity: 'base' }) === 0;
     } else {
       return this.name === other.name && this.prefix === other.Prefix;
     }
@@ -25,7 +25,7 @@ export class XName {
   public get Name(): string {
     return this.name;
   }
-  public getQualifiedName(): string {
+  public get FullName(): string {
     return this.prefix !== null ? `${this.prefix}:${this.name}` : this.name;
   }
 }

@@ -22,4 +22,9 @@ describe('XmlAttributeState', () => {
     parser.parseXml('<r attr="value" attr="other" />');
     parser.assertDiagnostics([XmlCoreDiagnostics.DuplicateAttributeName, 16, 12]);
   });
+  it('should report unquoted attribute', () => {
+    const parser = new XmlParser(createRootState());
+    parser.parseXml('<r attr=value />');
+    parser.assertDiagnostics([XmlCoreDiagnostics.UnquotedAttributeValue, 8, 6]);
+  });
 });
