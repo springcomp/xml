@@ -66,7 +66,6 @@ export class XmlRootState extends XmlParserState {
       context.StateTag = XmlRootState.BRACKET;
       return this;
     }
-    console.log(context.StateTag);
     switch (context.StateTag) {
       case XmlRootState.FREE:
         if (!XmlChar.IsWhitespace(c)) {
@@ -77,7 +76,6 @@ export class XmlRootState extends XmlParserState {
       case XmlRootState.BRACKET:
         if (c === '!') {
           context.StateTag = XmlRootState.BRACKET_EXCLAM;
-          console.log(`BRACKET_EXCLAM ${c} --> state ${context.StateTag}`);
           return this;
         } else if (c === '/') {
           return this.closingTagState;
@@ -91,7 +89,6 @@ export class XmlRootState extends XmlParserState {
         switch (c) {
           case '-':
             context.StateTag = XmlRootState.COMMENT;
-            console.log('COMMENT!');
             return this;
         }
         break;

@@ -31,8 +31,6 @@ export class XmlTreeParser {
 
     const nodes = this.context.Nodes;
 
-    console.log(`ENDALLNODES ${nodes.count()}`);
-
     try {
       let loopMax = nodes.count() * XmlTreeParser.REPLAY_LIMIT_PER_CHARACTER;
       while (nodes.count() >= 1 && loopMax-- > 0) {

@@ -66,9 +66,7 @@ export class XmlAttributeValueState extends XmlParserState {
 
     if (c == '"' && maskedTag == XmlAttributeValueState.DOUBLEQUOTE) {
       //ending the value
-      console.log(`ending attribute ${attr.Name.Name}: ${context.KeywordBuilder.toString()}`);
       attr.setValue(context.Position - context.KeywordBuilder.byteLength, context.KeywordBuilder.toString());
-      console.log(`ending attribute ${attr.Name.Name}: ${attr.Value}`);
       return this.Parent;
     }
 

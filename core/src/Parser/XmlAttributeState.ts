@@ -109,15 +109,11 @@ export class XmlAttributeState extends XmlParserState {
       return this.Parent;
     }
     const element = context.Nodes.peek().as(XElement);
-    console.log(`log duplicates: ${logDuplicate}`);
-    console.log(`get: ${element.Attributes.get(attr.Name) ?? ''}`);
     if (logDuplicate && element.Attributes.get(attr.Name) !== null) {
       context.addDiagnostic(XmlCoreDiagnostics.DuplicateAttributeName, attr.Span, attr.Name);
     }
-    console.log(`adding attribute ${attr.Name.Name}: ${attr.Value}`);
     if (isIAttributedXObject(element)) {
       element.Attributes.addAttribute(attr);
-      console.log(`added attribute ${attr.Name.Name}: ${attr.Value}`);
       return this.Parent;
     } else {
       throw new InvalidParserStateException('Expecting XElement on the stack');
